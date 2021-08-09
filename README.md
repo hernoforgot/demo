@@ -1,3 +1,3 @@
 # demo
 By used show all demos.
-demo: based on VIS.JS.
+demo.html: based on VIS.JS.
