@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
+     xmlns:svg="http://www.w3.org/2000/svg">
+    <!-- 制作折线stroke:线条颜色;opacity:透明度-->
+    <defs>
+        <linearGradient id="blue_line" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" style="stop-color: rgba(36,99,136, 0.2);"/>
+            <stop offset="50%" style="stop-color: rgba(36,99,136, 0.4);"/>
+            <stop offset="100%" style="stop-color: rgba(36,99,136, 0.65);"/>
+        </linearGradient>
+    </defs>
+    <defs>
+        <linearGradient id="deep_blue_line" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" style="stop-color: rgba(36,99,136, 0.65);"/>
+            <stop offset="50%" style="stop-color: rgba(36,99,136, 1);"/>
+            <stop offset="100%" style="stop-color: rgba(36,99,136, 0.65);"/>
+        </linearGradient>
+    </defs>
+    <g stroke="url(#blue_line)" stroke-width="2">
+        <title>broken line1</title>
+        <!-- 线条颜色的渐变 -->
+        <line x1="0%" y1="20%" x2="28%" y2="20%"/>
+        <line x1="28%" y1="20%" x2="30%" y2="70%"/>
+        <line x1="30%" y1="70%" x2="70%" y2="70%"/>
+        <line x1="70%" y1="70%" x2="72%" y2="20%"/>
+        <line x1="72%" y1="20%" x2="100%" y2="20%"/>
+    </g>
+    <g stroke="url(#deep_blue_line)" stroke-width="2">
+        <title>broken line2</title>
+        <line x1="2%" y1="30%" x2="28%" y2="30%"/>
+        <line x1="28%" y1="30%" x2="30%" y2="80%"/>
+        <line x1="30%" y1="80%" x2="70%" y2="80%"/>
+        <line x1="70%" y1="80%" x2="72%" y2="30%"/>
+        <line x1="72%" y1="30%" x2="98%" y2="30%"/>
+    </g>
+    <g stroke="url(#blue_line)" stroke-width="2">
+        <title>broken line3</title>
+        <line x1="4%" y1="40%" x2="28%" y2="40%" stroke-linecap="round"/>
+        <line x1="28%" y1="40%" x2="30%" y2="90%" stroke-linecap="round"/>
+        <line x1="30%" y1="90%" x2="70%" y2="90%" stroke-linecap="round"/>
+        <line x1="70%" y1="90%" x2="72%" y2="40%" stroke-linecap="round"/>
+        <line x1="72%" y1="40%" x2="96%" y2="40%" stroke-linecap="round"/>
+    </g>
+</svg>

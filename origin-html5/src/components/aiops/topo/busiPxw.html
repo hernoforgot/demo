@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>拓扑图2</title>
+    <style type="text/css">
+        html,
+        body {
+            width: 100%;
+            height: 100px;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body {
+            background: #0e0d0d !important;
+            display: flex;
+            flex-direction: column;
+        }
+
+        *,
+        *::before,
+        *::after {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        header svg {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        header>p {
+            font-size: 1.4em;
+            height: 40px;
+            margin: 5px 5px;
+            padding: 5px 30px 5px 30px;
+            text-shadow: 0 1px rgba(122, 174, 195, 0.15), 0 1px rgba(122, 174, 195, 0.3),
+                0 1px rgba(122, 174, 195, 0.45), 0 1px rgba(122, 174, 195, 0.65),
+                0 1px rgba(122, 174, 195, 0.75), 2px 4px 5px rgba(122, 174, 195, 1);
+            /* border: 1px solid #21A5CA;*/
+            /*  clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%);*/
+        }
+
+        .searchKey {
+            position: absolute;
+            right: 5px;
+            top: 40px;
+            width: 280px;
+            height: 25px;
+            margin-top: 10px;
+        }
+
+        .searchKey input {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            box-shadow: 0 0 10px 1px #3b8cf8, 0 0 1px #3b8cf8, 0 0 1px #3b8cf8,
+                0 0 1px #3b8cf8, 0 0 1px #3b8cf8, 0 0 1px #3b8cf8, 0 0 1px #3b8cf8;
+            border-radius: 5px;
+            padding-left: 25px;
+            color: white;
+            background: rgba(0, 0, 0, 0);
+        }
+
+        .searchKey::before {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            left: 5px;
+            top: 5px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgba(0, 99, 255, 0.78);
+            border-image: initial;
+            border-radius: 50%;
+        }
+
+        .searchKey::after {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            left: 15px;
+            top: 18px;
+            background-image: linear-gradient(to right,
+                    rgba(24, 88, 130, 1) 0%,
+                    rgba(24, 88, 130, 0.1) 100%,
+                    transparent 50%);
+            background-size: 100% 2px;
+            background-repeat: repeat-x;
+            -webkit-transform: skewX(-35deg);
+            transform: skewY(38deg);
+        }
+
+        .searchKey input:focus {
+            box-shadow: 0px 0px 10px 1px #3f51b5, 0 0 1px #3f51b5, 0 0 1px #3f51b5,
+                0 0 1px #3f51b5, 0 0 1px #3f51b5, 0 0 1px #3f51b5, 0 0 1px #3f51b5;
+        }
+
+        main svg {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        main>aside:first-child::after {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            width: calc(100% - 20px);
+            height: 3px;
+            left: 20px;
+            bottom: 0;
+            background-image: linear-gradient(to right,
+                    rgba(24, 88, 130, 1) 0%,
+                    rgba(24, 88, 130, 0.1) 100%,
+                    transparent 50%);
+            background-size: 100% 3px;
+            background-repeat: repeat-x;
+        }
+
+        main>aside:first-child {
+            width: 300px;
+            height: 100%;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: rgba(31, 37, 46, 0.61);
+            clip-path: polygon(0% 0%,
+                    calc(100% - 20px) 0%,
+                    100% 20px,
+                    100% 100%,
+                    20px 100%,
+                    0% calc(100% - 20px),
+                    0 70%,
+                    10px calc(70% - 10px),
+                    10px calc(100px + 10px),
+                    0 100px);
+            filter: drop-shadow(2px 4px 4px rgba(8, 13, 17, 0.64));
+            color: white;
+        }
+
+        .collectDataCount ul {
+            padding-left: 5px;
+            background: rgba(73, 68, 65, 0.31);
+            margin-left: 15px;
+            margin-right: 5px;
+            margin-bottom: 10px;
+            height: 30px;
+            line-height: 30px;
+            clip-path: polygon(0% 0%,
+                    calc(100% - 10px) 0%,
+                    100% 10px,
+                    100% 100%,
+                    10px 100%,
+                    0% calc(100% - 10px));
+            position: relative;
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .collectDataCount ul>li:first-child {
+            color: rgba(97, 114, 127, 0.98);
+            width: 100px;
+            text-align: right;
+        }
+
+        .collectDataCount ul>li:nth-child(2) {
+            width: calc(100% - 100px);
+            margin-left: 5px;
+        }
+
+        .collectDataCount {
+            position: relative;
+            height: 355px;
+            width: 100%;
+            padding-top: 5px;
+            margin-top: 25px;
+        }
+
+        .collectDataCount::before {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            width: 100%;
+            height: 15px;
+            left: 0;
+            top: -15px;
+            background: rgba(72, 123, 213, 1);
+            background: linear-gradient(to right,
+                    rgba(72, 123, 213, 1) 0%,
+                    rgba(72, 123, 213, 0.2) 100%);
+            clip-path: polygon(0 95%,
+                    45% 95%,
+                    calc(45% + 10px) 0%,
+                    100% 0,
+                    100% 2px,
+                    60% 2px,
+                    calc(60% - 10px) 100%,
+                    0 100%);
+        }
+
+        .collectDataCount::after {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            width: 38%;
+            height: 15px;
+            left: 60%;
+            top: -11px;
+            background-image: linear-gradient(to right,
+                    rgba(72, 123, 213, 0.5) 0%,
+                    rgba(72, 123, 213, 0) 50%,
+                    transparent 50%);
+            background-size: 11px 10px;
+            background-repeat: repeat-x;
+            transform: skewX(-35deg);
+        }
+
+        .collectDataCount>ul::after {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+        }
+
+        .collectDataCount>ul:first-child::after {
+            box-shadow: 0 0 10px rgba(245, 120, 120, 0.85) inset;
+        }
+
+        .collectDataCount>ul:nth-child(2)::after {
+            box-shadow: 0 0 10px rgba(248, 178, 16, 0.85) inset;
+        }
+
+        .collectDataCount>ul:nth-child(3)::after {
+            box-shadow: 0 0 10px rgba(9, 94, 6, 0.85) inset;
+        }
+
+        .collectDataCount>ul:nth-child(4)::after {
+            box-shadow: 0 0 10px rgba(32, 94, 75, 0.85) inset;
+        }
+
+        .collectDataCount>ul:nth-child(5)::after {
+            box-shadow: 0 0 10px rgba(45, 58, 94, 0.85) inset;
+        }
+
+        .collectDataCount>ul:nth-child(6)::after {
+            box-shadow: 0 0 10px rgba(76, 205, 252, 0.85) inset;
+        }
+
+        .collectDataCount>ul:nth-child(7)::after {
+            box-shadow: 0 0 10px rgba(84, 14, 94, 0.85) inset;
+        }
+
+        .collectDataCount>ul:nth-child(8)::after {
+            box-shadow: 0 0 10px rgba(94, 30, 7, 0.85) inset;
+        }
+
+        .showADResult::before {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            width: 100%;
+            height: 2px;
+            left: 0;
+            top: 0;
+            background-image: linear-gradient(to right,
+                    #70a1b6 0%,
+                    rgba(112, 161, 182, 0.15) 50%,
+                    transparent 50%);
+            background-size: 45px 2px;
+            background-repeat: repeat-x;
+        }
+
+        .showADResult {
+            /*border-top: 2px dashed #7FB7CB;
+      border-bottom: 2px dashed #7FB7CB;*/
+            position: relative;
+            height: 40px;
+            line-height: 40px;
+            margin: 15px 20px 0 20px;
+            text-shadow: 0 1px rgba(122, 174, 195, 0.15), 0 1px rgba(122, 174, 195, 0.3),
+                0 1px rgba(122, 174, 195, 0.45), 0 1px rgba(122, 174, 195, 0.65),
+                0 1px rgba(122, 174, 195, 0.75), 2px 4px 5px rgba(122, 174, 195, 1);
+        }
+
+        .showADResult::after {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            width: 100%;
+            height: 2px;
+            left: 0;
+            bottom: 0;
+            background-image: linear-gradient(to right,
+                    #70a1b6 0%,
+                    rgba(112, 161, 182, 0.15) 50%,
+                    transparent 50%);
+            background-size: 45px 12px;
+            background-repeat: repeat-x;
+        }
+
+        .batchResult {
+            position: relative;
+            height: 25px;
+            line-height: 25px;
+        }
+
+        #mynetwork {
+            flex: 1;
+            /*border: 1px solid lightgray;*/
+        }
+
+        table.legend_table {
+            border-collapse: collapse;
+        }
+
+        table.legend_table td,
+        table.legend_table th {
+            border: 1px solid #d3d3d3;
+            padding: 10px;
+        }
+
+        table.legend_table td {
+            text-align: center;
+            width: 110px;
+        }
+
+        .limitDiv {
+            display: none;
+            width: 200px;
+            height: 100px;
+            background: rgba(17, 26, 56, 0.81);
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            clip-path: polygon(0% 0%,
+                    calc(100% - 20px) 0%,
+                    100% 20px,
+                    100% 100%,
+                    20px 100%,
+                    0% calc(100% - 20px));
+            filter: drop-shadow(3px 4px 4px #3b8cf8);
+        }
+
+        .myDefined::before {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            width: 100%;
+            height: 15px;
+            left: 0;
+            top: -15px;
+            background: rgba(72, 123, 213, 1);
+            background: linear-gradient(to right,
+                    rgba(72, 123, 213, 1) 0%,
+                    rgba(72, 123, 213, 0.2) 100%);
+            clip-path: polygon(0 95%,
+                    45% 95%,
+                    calc(45% + 10px) 0%,
+                    100% 0,
+                    100% 2px,
+                    60% 2px,
+                    calc(60% - 10px) 100%,
+                    0 100%);
+        }
+
+        .myDefined {
+            position: relative;
+            margin-top: 45px;
+            height: 250px;
+            width: 100%;
+            border-radius: 5px;
+            padding-top: 5px;
+            color: white;
+            border-image: linear-gradient(rgba(72, 123, 213, 0.3),
+                    rgba(72, 123, 213, 1),
+                    rgba(72, 123, 213, 0.3)) 1 10 1;
+            border: 0;
+        }
+
+        .myDefined::after {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            width: 38%;
+            height: 15px;
+            left: 60%;
+            top: -11px;
+            background-image: linear-gradient(to right,
+                    rgba(72, 123, 213, 0.5) 0%,
+                    rgba(72, 123, 213, 0) 50%,
+                    transparent 50%);
+            background-size: 11px 10px;
+            background-repeat: repeat-x;
+            transform: skewX(-35deg);
+        }
+
+        .myDefined>ol {
+            width: 100%;
+            display: flex;
+            justify-content: space-evenly;
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+
+        .myDefined>ol>li:first-child {
+            color: hsl(210, 13%, 30%);
+            width: 100px;
+            text-align: right;
+        }
+
+        .myDefined>ol>li:nth-child(2) {
+            margin-left: 5px;
+            width: calc(100% - 120px);
+        }
+
+        .topoImageShow {
+            position: relative;
+            margin-top: 12px;
+            height: 80px;
+            width: 100%;
+            color: white;
+            border: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+        }
+
+        .topoImageShow ul> {}
+
+        .topoImageShow ul>li {
+            width: 80px;
+            display: flex;
+            flex-wrap: wrap;
+            animation: 15s startToEndLine linear infinite normal;
+            animation-play-state: running;
+        }
+
+        .topoImageShow img {
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .topoImageShow p {
+            margin-top: 5px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .topoImageShow ul:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes startToEndLine {
+            0% {
+                transform: translate3d(400%, 0, 0);
+            }
+
+            25% {
+                transform: translate3d(100%, 0, 0);
+            }
+
+            50% {
+                transform: translate3d(-200%, 0, 0);
+            }
+
+            75% {
+                transform: translate3d(-500%, 0, 0);
+            }
+
+            100% {
+                transform: translate3d(-800%, 0, 0);
+            }
+        }
+
+        #echartsResultShow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            left: 0;
+            bottom: 270px;
+        }
+        
+        @import "../../../../public/css/vis-reset.css";
+
+        .autoDiscoTopo {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85) !important;
+            /* background: url("../../../../npage/cmdb/auto-disco/topo/1.png") fixed no-repeat;*/
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding-top: 10px;
+            width: 100%;
+            height: 70px;
+            text-align: center;
+            color: rgba(253, 255, 255, 1);
+            font-weight: bolder;
+            position: relative;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: space-evenly;
+            min-width: 650px;
+            flex-wrap: wrap;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+            background-color: #f4f4f4;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border-radius: 50px;
+            background-color: #afb3bf !important;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+            <!-- 制作折线stroke:线条颜色;opacity:透明度-->
+            <defs>
+                <linearGradient id="blue_line" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" style="stop-color: rgba(36,99,136, 0.2);" />
+                    <stop offset="50%" style="stop-color: rgba(36,99,136, 0.4);" />
+                    <stop offset="100%" style="stop-color: rgba(36,99,136, 0.65);" />
+                </linearGradient>
+            </defs>
+            <defs>
+                <linearGradient id="deep_blue_line" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" style="stop-color: rgba(36,99,136, 0.65);" />
+                    <stop offset="50%" style="stop-color: rgba(36,99,136, 1);" />
+                    <stop offset="100%" style="stop-color: rgba(36,99,136, 0.65);" />
+                </linearGradient>
+            </defs>
+            <g stroke="url(#blue_line)" stroke-width="2">
+                <title>broken line1</title>
+                <!-- 线条颜色的渐变 -->
+                <line x1="0%" y1="30%" x2="28%" y2="30%" />
+                <line x1="28%" y1="30%" x2="30%" y2="80%" />
+                <line x1="30%" y1="80%" x2="70%" y2="80%" />
+                <line x1="70%" y1="80%" x2="72%" y2="30%" />
+                <line x1="72%" y1="30%" x2="100%" y2="30%" />
+            </g>
+            <g stroke="url(#deep_blue_line)" stroke-width="2">
+                <title>broken line2</title>
+                <line x1="2%" y1="40%" x2="28%" y2="40%" />
+                <line x1="28%" y1="40%" x2="30%" y2="90%" />
+                <line x1="30%" y1="90%" x2="70%" y2="90%" />
+                <line x1="70%" y1="90%" x2="72%" y2="40%" />
+                <line x1="72%" y1="40%" x2="98%" y2="40%" />
+            </g>
+            <g stroke="url(#blue_line)" stroke-width="2">
+                <title>broken line3</title>
+                <line x1="4%" y1="50%" x2="28%" y2="50%" stroke-linecap="round" />
+                <line x1="28%" y1="50%" x2="30%" y2="100%" stroke-linecap="round" />
+                <line x1="30%" y1="100%" x2="70%" y2="100%" stroke-linecap="round" />
+                <line x1="70%" y1="100%" x2="72%" y2="50%" stroke-linecap="round" />
+                <line x1="72%" y1="50%" x2="96%" y2="50%" stroke-linecap="round" />
+            </g>
+        </svg>
+        <p>网络拓扑图</p>
+        <aside class="searchKey">
+            <input placeholder="输入IP或设备名称搜索" type="search" list="esDataList" autocomplete="off" v-model="keyword" />
+            <datalist id="esDataList">
+                <option v-for="item in allContext" :id="item.id">{{ item.sysName }}-{{ item.ip }}</option>
+            </datalist>
+        </aside>
+    </header>
+    <main>
+        <aside style="color: rgb(233, 227, 227);">
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+                <!-- 制作折线stroke:线条颜色;opacity:透明度-->
+                <!-- 制作折线stroke:线条颜色;opacity:透明度-->
+                <defs>
+                    <linearGradient id="blue_line" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color: rgba(36,99,136, 0.65);" />
+                        <stop offset="100%" style="stop-color: rgba(36,99,136, 0);" />
+                    </linearGradient>
+                </defs>
+                <g>
+                    <title>broken line1</title>
+                    <!--stroke-linecap="round"圆角-->
+                    <line stroke-width="1px" stroke="url(#blue_line)" x1="100%" y1="20px" x2="calc(100% - 20px)" y2="0%"
+                        stroke-linecap="round" />
+                    <line stroke-width="1px" opacity="0.65" fill="none" stroke="#2385BD" x1="calc(100% - 20px)" y1="0%"
+                        x2="0%" y2="0%" stroke-linecap="round" />
+                    <line stroke-width="1px" opacity="0.65" fill="none" stroke="#2385BD" x1="0%" y1="0%" x2="0%"
+                        y2="100px" stroke-linecap="round"></line>
+                    <line stroke-width="1px" opacity="0.65" fill="none" stroke="#2385BD" x1="0%" y1="100px" x2="10px"
+                        stroke-linecap="round" y2="calc(100px + 10px)"></line>
+                </g>
+            </svg>
+            <p class="showADResult">自动发现网络设备采集结果</p>
+            <p class="batchResult">
+                <el-select style="width: 100%;" v-model="currentSelect" filterable placeholder="请选择" change="change">
+                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                </el-select>
+            </p>
+            <aside class="myDefined" style="background-color: cornsilk;">
+                <ol>
+                    <li>网络设备总数</li>
+                    <li>24台</li>
+                </ol>
+                <ol>
+                    <li>端口总数</li>
+                    <li>121个</li>
+                </ol>
+                <ol>
+                    <li>活动端口总数</li>
+                    <li>62个</li>
+                </ol>
+                <ol>
+                    <li>CMDB已入库</li>
+                    <li>24台</li>
+                </ol>
+                <ol>
+                    <li>使用中</li>
+                    <li>24台</li>
+                </ol>
+                <ol>
+                    <li>与上次相比</li>
+                    <li>
+                        2台<span style="margin-left: 5px; color: rgba(232,79,138,0.85)">↓</span>
+                    </li>
+                </ol>
+                <ol>
+                    <li>采集时间</li>
+                    <li>2020-07-27 19:50:01</li>
+                </ol>
+            </aside>
+            <aside class="collectDataCount">
+                <ul>
+                    <li>交换机</li>
+                    <li>
+                        4台<span style="margin-left: 40px; color: rgba(232,79,138,0.85)">↓</span>
+                    </li>
+                </ul>
+                <ul>
+                    <li>路由器</li>
+                    <li>
+                        3台<span style="margin-left: 40px; color: rgba(232,79,138,0.85)">↓</span>
+                    </li>
+                </ul>
+                <ul>
+                    <li>防火墙</li>
+                    <li>4台</li>
+                </ul>
+                <ul>
+                    <li>物理主机</li>
+                    <li>7台</li>
+                </ul>
+                <ul>
+                    <li>虚拟机</li>
+                    <li>6台</li>
+                </ul>
+            </aside>
+            <aside class="topoImageShow">
+                <ul v-for="item in showImage">
+                    <li>
+                        <img :src="item.img" width="25" height="25" />
+                        <p>
+                            {{ item.name }}
+                        </p>
+                    </li>
+                </ul>
+            </aside>
+            <div id="echartsResultShow" style="display: none;"></div>
+        </aside>
+        <section id="mynetwork"></section>
+    </main>
+   
+</body>
+<script>
+
+</script>
+
+</html>

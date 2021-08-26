@@ -1,0 +1,98 @@
+[
+  {
+    "from":"1",
+    "to":"2",
+    "label": "10.176.218.77\n10.176.218.78\n40GE"
+  },
+  {
+    "from":"1",
+    "to":"1-1"
+  },
+  {
+    "from":"2",
+    "to":"2-2"
+  },
+  {
+    "from":"1-1",
+    "to":"1-1-1",
+    "dashes": true
+  },
+  {
+    "from":"1",
+    "to":"1-3"
+  },
+  {
+    "from":"2",
+    "to":"2-4"
+  },
+  {
+    "from":"1-1",
+    "to":"1-1-2",
+    "dashes": true
+  },
+  {
+    "from":"1-1",
+    "to":"1-1-3",
+    "dashes": true
+  },
+  {
+    "from":"1-1",
+    "to":"1-1-4",
+    "dashes": true
+  },
+  {
+    "from":"1-1",
+    "to":"1-1-5",
+    "dashes": true
+  },
+  {
+    "from":"1-1-4",
+    "to":"1-1-4-1",
+    "dashes": true
+  },
+  {
+    "from":"1-1-4",
+    "to":"1-1-4-2",
+    "dashes": true
+  },
+  {
+    "from":"2-2",
+    "to":"2-2-1",
+    "dashes": true
+  },
+  {
+    "from":"2-2",
+    "to":"2-2-2",
+    "dashes": true
+  },
+  {
+    "from":"2-2",
+    "to":"2-2-3",
+    "dashes": true
+  },
+  {
+    "from":"2-2",
+    "to":"2-2-4",
+    "dashes": true
+  },
+  {
+    "from":"1-3",
+    "to":"1-3-1",
+    "dashes": true
+  },
+  {
+    "from":"1-3",
+    "to":"1-3-2",
+    "dashes": true
+  },
+  {
+    "from":"2-4",
+    "to":"2-4-1",
+    "dashes": true
+  },
+  {
+    "from":"2-4",
+    "to":"2-4-2",
+    "dashes": true
+  }
+]

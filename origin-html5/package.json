@@ -1,0 +1,24 @@
+{
+  "name": "ganhx-html5",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [
+    "demo",
+    "study"
+  ],
+  "license": "",
+  "author": "ganhx",
+  "scripts": {
+    "dev": "parcel index.html --open",
+    "start": "npm run build && npm run dev",
+    "build": "parcel build index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  },
+  "dependencies": {
+    "http-proxy": "^1.18.1",
+    "jquery": "^3.5.1"
+  }
+}

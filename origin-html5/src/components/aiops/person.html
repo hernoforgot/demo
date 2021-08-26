@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>短信发送人员列表</title>
+</head>
+<link href="../../../nresource/alarm_analysis/js/layui/css/layui.css" rel="stylesheet"/>
+<link href="../../../nresource/alarm_analysis/js/layui/css/formSelects-beautify.css" rel="stylesheet"/>
+<link href="../../../nresource/alarm_analysis/js/layui/css/layui-personalized.css" rel="stylesheet"/>
+<link href="../../../nresource/alarm_analysis/js/layui/css/soulTable.css" rel="stylesheet"/>
+<script src="../../../nresource/alarm_analysis/js/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script src="../../../nresource/alarm_analysis/js/layui/layui.js" type="text/javascript"></script>
+<body>
+<header></header>
+<section>
+  <table class="layui-hide" id="personTable" lay-filter="personTable"></table>
+</section>
+<footer></footer>
+<script>
+  var initPerson = [
+    {
+      "NAME": "丁亮",
+      "MOBILE": "18879101177",
+      "ROW_ID": 1
+    },
+    {
+      "NAME": "丁伟",
+      "MOBILE": "15083616048",
+      "ROW_ID": 2
+    },
+    {
+      "NAME": "丁俊",
+      "MOBILE": "13907944186",
+      "ROW_ID": 3
+    },
+    {
+      "NAME": "丁勤",
+      "MOBILE": "13870692992",
+      "ROW_ID": 4
+    },
+    {
+      "NAME": "丁婕",
+      "MOBILE": "13766270691",
+      "ROW_ID": 5
+    },
+    {
+      "NAME": "丁康",
+      "MOBILE": "13879296298",
+      "ROW_ID": 6
+    },
+    {
+      "NAME": "丁敏",
+      "MOBILE": "13576999209",
+      "ROW_ID": 7
+    },
+    {
+      "NAME": "丁敏",
+      "MOBILE": "13870905836",
+      "ROW_ID": 8
+    },
+    {
+      "NAME": "丁敏",
+      "MOBILE": "13979658669",
+      "ROW_ID": 9
+    },
+    {
+      "NAME": "丁文",
+      "MOBILE": "13979501831",
+      "ROW_ID": 10
+    },
+    {
+      "NAME": "丁然",
+      "MOBILE": "13870960209",
+      "ROW_ID": 11
+    },
+    {
+      "NAME": "丁畅",
+      "MOBILE": "13767172727",
+      "ROW_ID": 12
+    },
+    {
+      "NAME": "丁科",
+      "MOBILE": "15107977771",
+      "ROW_ID": 13
+    },
+    {
+      "NAME": "丁聪",
+      "MOBILE": "15070779711",
+      "ROW_ID": 14
+    },
+    {
+      "NAME": "丁芳",
+      "MOBILE": "13970376656",
+      "ROW_ID": 15
+    },
+    {
+      "NAME": "丁薇",
+      "MOBILE": "13979125880",
+      "ROW_ID": 16
+    },
+    {
+      "NAME": "丁青",
+      "MOBILE": "13907996928",
+      "ROW_ID": 17
+    },
+    {
+      "NAME": "万东",
+      "MOBILE": "15907919899",
+      "ROW_ID": 18
+    },
+    {
+      "NAME": "万丽",
+      "MOBILE": "15979053699",
+      "ROW_ID": 19
+    },
+    {
+      "NAME": "万乐",
+      "MOBILE": "15979003608",
+      "ROW_ID": 20
+    },
+    {
+      "NAME": "万亮",
+      "MOBILE": "13870097919",
+      "ROW_ID": 21
+    },
+    {
+      "NAME": "万亮",
+      "MOBILE": "13870641358",
+      "ROW_ID": 22
+    },
+    {
+      "NAME": "万伟",
+      "MOBILE": "13907918338",
+      "ROW_ID": 23
+    },
+    {
+      "NAME": "万俊",
+      "MOBILE": "13507000319",
+      "ROW_ID": 24
+    },
+    {
+      "NAME": "万俊",
+      "MOBILE": "13507953885",
+      "ROW_ID": 25
+    },
+    {
+      "NAME": "万俊",
+      "MOBILE": "13870818080",
+      "ROW_ID": 26
+    },
+    {
+      "NAME": "万倩",
+      "MOBILE": "13879308617",
+      "ROW_ID": 27
+    },
+    {
+      "NAME": "万军",
+      "MOBILE": "13907912828",
+      "ROW_ID": 28
+    },
+    {
+      "NAME": "万军",
+      "MOBILE": "15970478850",
+      "ROW_ID": 29
+    },
+    {
+      "NAME": "万凤",
+      "MOBILE": "13970934567",
+      "ROW_ID": 30
+    }
+  ];
+
+  $(document).ready(function () {
+    // 自定义模块，这里只需要开放soulTable即可
+    layui.use('table', function () {
+      var layer = layui.layer;
+      var table = layui.table;
+      var myTable = table.render({
+        elem: '#personTable'
+        , height: 450
+        , data: initPerson
+        , toolbar: true
+        , title: '人员基础信息列表'
+        , cols: [[
+          {align: 'center', title: '人员基础信息列表', colspan: 6}
+        ], [
+          {type: 'checkbox', title: '##', fixed: 'left'}
+          , {field: 'ROW_ID', title: '序号', width: 80}
+          , {field: 'NAME', title: '人员名称', sort: true}
+          , {field: 'MOBILE', title: '手机号码'}
+        ]]
+        , request: {
+          pageName: 'pageNo' //页码的参数名称，默认：page
+          , limitName: 'pageSize' //每页数据量的参数名，默认：limit
+        }
+        , response: {
+          statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+          , countName: 'total' //规定数据总数的字段名称，默认：count
+        }
+        , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+          return {
+            "code": res.code, //解析接口状态
+            "data": res.data, //解析数据列表
+            "total": res.total, //解析数据长度
+          };
+        }
+        , where: { //设定异步数据接口的额外参数，任意设
+          batch: "",
+        }
+        , page: {
+          limit: 50
+          , limits: [10, 50, 100, 500, 1000]
+        }
+        , done: function (res, curr, count) {
+          // 设置表格标题颜色
+          // 设置表格偶数列颜色
+          var that = this.elem.next();
+          for (var i in res.data) {		//遍历整个表格数据
+            if (i % 5 == 4) {
+              that.find('.layui-table-box tr[data-index="' + i + '"]').css({'background-color': 'rgba(240,240,240, 1)'});
+            }
+          }
+        }
+      });
+
+      table.on('checkbox(personTable)', function (obj) {
+        console.log(obj.checked);
+        if (obj.type == "all") {
+           // 复选框全选切换
+        } else if (obj.type == "one") {
+          parent.invokeData(obj.data, obj.checked);
+        }
+      });
+    });
+
+
+  });
+</script>
+</body>
+</html>

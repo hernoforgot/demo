@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>短信发送</title>
+</head>
+<style>
+  *,
+  *::before,
+  *::after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  /** 修改滚动条样式 部分浏览器不支持 */
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: #f4f4f4;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 50px;
+    background-color: #afb3bf !important;
+  }
+
+  html,
+  body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+
+  ol,
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  blockquote {
+    margin: 0;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    width: 100%;
+    height: 50px;
+    display: flex;
+  }
+
+
+  section {
+    flex: 1;
+    border: 1px skyblue solid;
+    background: #FBFDFF;
+    border-radius: 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  section>article {
+    width: 100%;
+    margin-top: 15px;
+    color: #606166;
+  }
+
+  footer {
+    width: 100%;
+    display: flex;
+    height: 200px;
+  }
+
+  header>aside:first-child {
+    flex: 1;
+  }
+
+  header>aside:nth-child(2) {
+    width: 80px;
+    position: relative;
+  }
+
+  input[type='text'] {
+    width: 100%;
+    height: calc(100% - 20px);
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 0;
+    padding-left: 10px;
+    box-shadow: 0px 0px 10px 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5;
+  }
+
+  footer>aside:first-child {
+    width: 80px;
+    position: relative;
+  }
+
+  footer>aside:nth-child(2) {
+    flex: 1;
+    margin-left: 20px;
+  }
+
+  footer>aside:nth-child(3) {
+    width: 80px;
+    position: relative;
+  }
+
+  textarea {
+    width: 100%;
+    height: calc(100% - 40px);
+    border: 0;
+    box-shadow: 0px 0px 10px 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5;
+    border-radius: 5px;
+    padding-left: 10px !important;
+    padding-top: 10px !important;
+    margin: 15px 0 !important;
+  }
+
+  .addPerson,
+  .sendMsgBtn,
+  .templateListBtn {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    cursor: pointer;
+  }
+
+  .sendAdministrator {
+    text-align: right;
+    padding-right: 20px;
+    margin-bottom: 10px;
+    margin-top: 0;
+    font-size: 12px;
+  }
+
+  .sendTime {
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    font-size: small;
+    color: #7c7d7e;
+  }
+
+  .msgContent {
+    position: relative;
+    background: rgba(216, 235, 255, 1);
+    border-radius: 0px 8px 8px 19px;
+    margin-left: 20px;
+    margin-right: 20px;
+    text-align: left;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+  }
+
+  .msgContent::after {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    right: 5px;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 10px solid rgba(216, 235, 255, 1);
+  }
+
+  nav {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding-top: 10px;
+    padding-left: 20px;
+  }
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  input[id^="person"]:checked+label {
+    display: inline-block;
+    position: relative;
+    min-width: 20px;
+    height: 30px;
+    line-height: 20px;
+    border-radius: 5px;
+    color: #409eff;
+    background: #ecf5ff;
+    border-color: #b3d8ff;
+    padding: 5px 10px;
+    margin-right: 20px;
+    pointer-events: none;
+  }
+
+  input[id^="person"]:checked+label::before {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    right: -10px;
+    width: 20px;
+    height: 1px;
+    border: 0;
+    background: rgba(0, 99, 255, 0.78);
+    transform: rotate(45deg);
+    cursor: pointer;
+    pointer-events: fill;
+  }
+
+  input[id^="person"]:checked+label::after {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    right: -10px;
+    width: 20px;
+    height: 1px;
+    border: 0;
+    background: rgba(0, 99, 255, 0.78);
+    transform: rotate(-45deg);
+    cursor: pointer;
+    pointer-events: fill;
+  }
+
+  input[id^="person"]+label {
+    display: none;
+  }
+
+  input[id^="person"]+label::before {
+    display: none;
+  }
+
+  input[id^="person"]+label::after {
+    display: none;
+  }
+
+
+  h3 {
+    margin-left: 25px !important;
+    font-size: 18px !important;
+  }
+
+  h5 {
+    margin-left: 50px !important;
+    margin-bottom: 5px !important;
+  }
+
+  input[id^="alarm-content"]+label {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  input[id^="alarm-content"]+label::after {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    top: 5px;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-top: 10px rgba(0, 99, 255, 0.78) solid;
+    border-right: 10px solid transparent;
+    transition: transform 0.2s ease-in;
+  }
+
+  input[id^="alarm-content"]:checked+label::after {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    top: 5px;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-top: 10px rgba(0, 99, 255, 0.78) solid;
+    border-right: 10px solid transparent;
+    transform: rotate(180deg);
+  }
+
+
+  input[id^="alarm-content"]+label+div {
+    display: inline-block;
+    position: relative;
+  }
+
+  input[id^="alarm-content"]:checked+label+div {
+    display: none;
+  }
+</style>
+<link href="../../../nresource/alarm_analysis/js/layui/css/layui.css" rel="stylesheet" />
+<script src="../../../nresource/alarm_analysis/js/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script src="../../../nresource/alarm_analysis/js/layui/layui.js" type="text/javascript"></script>
+
+<body>
+  <header style="display: none;">
+    <aside>
+      <nav></nav>
+    </aside>
+    <aside>
+      <img title="短信发送人员" src="../../../nresource/images/message/add_man.svg" class="addPerson" />
+    </aside>
+  </header>
+  <section>
+  </section>
+  <footer style="display: none;">
+    <aside style="display: none;"><img title="短信发送模板" src="../../../nresource/images/message/template.svg"
+        class="templateListBtn" /></aside>
+    <aside><textarea></textarea></aside>
+    <aside><img title="短信发送按钮" src="../../../nresource/images/message/send.svg" class="sendMsgBtn" /></aside>
+  </footer>
+</body>
+<script>
+
+  $(document).ready(function () {
+    var list = [];
+    var obj = {
+      rowId: 1, sender: "张成冰",
+      main: "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+      subList: ["10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30"],
+      time: "2020/11/4 10:43:00"
+    };
+    list.push(obj);
+    obj = {
+      rowId: 2, sender: "张成冰",
+      main: "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+      subList: ["10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30"],
+      time: "2020/11/4 10:21:00"
+    };
+    list.push(obj);
+    obj = {
+      rowId: 3, sender: "张成冰",
+      main: "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+      subList: ["10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30",
+        "10.180.214.61:/data02/data/err/split_file/loading/ld_gsm_nokia最新的值为: 41,符合性能值[指定目录下文件数]>=30"],
+      time: "今天 15:43:00"
+    };
+    list.push(obj);
+    var html = '';
+    list.forEach(function (item) {
+      var sub = '';
+      item.subList.forEach(function (value) {
+        sub += '<h5>' + value + '</h5>';
+      });
+      html += '<article> ' +
+        '    <p class="sendAdministrator">' + item.sender + '</p> ' +
+        '    <aside class="msgContent"> ' +
+        '      <input type="checkbox" id="alarm-content' + item.rowId + '" checked/> ' +
+        '      <label for="alarm-content' + item.rowId + '"><h3>' + item.main + '</h3></label> ' +
+        '      <div>' + sub + '</div> ' +
+        '    </aside> ' +
+        '    <blockquote class="sendTime">' + item.time + '</blockquote> ' +
+        '  </article>'
+    });
+    $("section").html(html)
+  });
+
+  $(".addPerson").click(function () {
+    layui.use('layer', function () {
+      var layer = layui.layer;
+      //iframe窗
+      var index = layer.open({
+        type: 2,
+        title: "人员基础信息详情",
+        shadeClose: true,
+        skin: 'layui-layer-rim', //加上边框
+        area: ['600px', '550px'], //宽高
+        anim: 2,
+        maxmin: true,
+        content: ['./person.html', 'no'], //iframe的url，no代表不显示滚动条
+        success: function (lay, index) {
+          var iframe = window['layui-layer-iframe' + index];
+          //调用子页面的全局函数(方法)
+          //  iframe.child(data);
+        },
+        cancel: function (index, lay) {
+          layer.close(index);
+          return true;
+        }
+      });
+      // layer.full(index);
+    });
+  });
+
+  $(".sendMsgBtn").click(function () {
+    window.setTimeout(function () {
+      layui.use('layer', function () {
+        var layer = layui.layer;
+        layer.msg("短信发送成功!", {
+          shade: 0.4,
+          shadeClose: true, //开启遮罩关闭
+          time: false,
+        });
+      });
+    }, 1200);
+  });
+
+  function invokeData(data, status) {
+    var list = [];
+    $("input[name='tab']:checked").each(function () {
+      var obj = {};
+      obj.MOBILE = $(this).val();
+      obj.NAME = $(this).attr("data-name");
+      list.push(obj)
+    });
+    console.log(data)
+    var flag = false;
+    var index = 0;
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].MOBILE == data.MOBILE) {
+        flag = true;
+        index = i;
+        break;
+      }
+    }
+    if (!status && flag) {
+      list.splice(index, 1);
+    } else if (status && !flag) {
+      list.push(data);
+    }
+    var html = "";
+    list.forEach(function (item) {
+      html += '<input id="person' + item.MOBILE + '" data-name="' + item.NAME + '" ' +
+        'type="checkbox" name="tab" value="' + item.MOBILE + '" checked/>' +
+        '      <label for="person' + item.MOBILE + '">' + item.NAME + '</label>';
+    });
+    $("nav").html(html);
+  }
+
+</script>
+
+</html>

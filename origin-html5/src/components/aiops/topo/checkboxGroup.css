@@ -1,0 +1,170 @@
+input[data-type^='tab'] {
+  display: none;
+}
+
+input[data-type^='tab'] + label:hover {
+  cursor: pointer;
+}
+
+input[data-type^='tab'] + label {
+  display: inline-block;
+}
+
+input[id^="changeTab"] + label {
+  display: inline-block;
+  height: 26px;
+  width: 50px;
+}
+
+input[id="changeTabLeft"] + label > img {
+  transition: transform 0.2s ease-in;
+  transform: rotate(180deg);
+}
+
+input[id="changeTabLeft"]:checked + label > img {
+  transform: rotate(0deg);
+}
+
+input[id="changeTabRight"] + label > img {
+  transition: transform 0.2s ease-in;
+}
+
+input[id="changeTabRight"]:checked + label > img {
+  transform: rotate(-180deg);
+}
+
+input[id^="openTab"] + label {
+  display: inline-block;
+  height: 26px;
+  width: 50px;
+  box-shadow: 0 1px 4px #ddd;
+  background-color: rgb(173, 173, 173);
+  color: white !important;
+  clip-path: polygon(20% 0%, 100% 0, 80% 100%, 0 100%);
+}
+
+
+/* 选定时label的css事件 */
+input[id^="openTab"]:checked + label {
+  box-shadow: 0 1px 4px #ddd;
+  background-color: rgba(43, 145, 228, 0.85);
+}
+
+
+input[id^="searchIcon"] + label {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 35px;
+  display: inline-block;
+  border-radius: 5px;
+  height: 35px;
+}
+
+input[id^="searchIcon"] + label::before {
+  content: "";
+  position: absolute;
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  left: 0;
+  top: 0;
+  border-width: 2px;
+  border-style: solid;
+  border-color: rgba(0, 99, 255, 0.78);
+  border-radius: 50%;
+  transition: all 2s;
+}
+
+
+input[id^="searchIcon"] + label::after {
+  content: "";
+  position: absolute;
+  display: inline-block;
+  width: 15px;
+  height: 2px;
+  left: 20px;
+  top: 25px;
+  background: rgba(0, 99, 255, 0.78);
+  transform: rotate(45deg);
+  transition: all 2s;
+}
+
+input[id^="searchIcon"]:checked + label::before {
+  border-color: #3F51B5;
+}
+
+input[id^="searchIcon"]:checked + label::after {
+  background: #3F51B5;
+}
+
+input[id^="searchIcon"]:checked + label + #searchInput {
+  width: calc(100% - 50px);
+  height: 100%;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+input[id^="searchIcon"]:checked + label + #searchInput + .searchResult {
+  width: 250px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+input[id^="situation"] + label {
+  position: relative;
+  display: inline-block;
+  height: 25px;
+  width: 100%;
+  color: #079cf3;
+  font-size: 16px;
+  padding-left: 10px;
+}
+
+
+input[id^="situation"] + label::after {
+  content: "";
+  position: absolute;
+  display: inline-block;
+  top: 5px;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-top: 10px rgba(0, 99, 255, 0.78) solid;
+  border-right: 10px solid transparent;
+  /*重点1*/
+  transition:transform 0.2s ease-in;
+}
+
+/* 选定时label的css事件 */
+input[id^="situation"]:checked + label {
+
+}
+
+
+input[id^="situation"]:checked + label::after {
+  content: "";
+  position: absolute;
+  display: inline-block;
+  top: 5px;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-top: 10px rgba(0, 99, 255, 0.78) solid;
+  border-right: 10px solid transparent;
+  /*重点2*/
+  transform: rotate(180deg);
+}
+
+input[id^="situation"] + label + nav {
+  display: none;
+}
+
+
+/* 选定时label的css事件 */
+input[id^="situation"]:checked + label + nav {
+  display: block;
+}

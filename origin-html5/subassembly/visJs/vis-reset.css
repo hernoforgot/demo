@@ -1,0 +1,87 @@
+/*重写vis整体风格*/
+
+div.vis-edit-mode {
+    background-color: rgba(208,206,238,0) !important;
+    color: white !important;
+    text-shadow: 0 1px rgba(122, 174, 195, 0.15),
+    0 1px rgba(122, 174, 195, 0.3),
+    0 1px rgba(122, 174, 195, 0.45),
+    0 1px rgba(122, 174, 195, 0.65),
+    0 1px rgba(122, 174, 195, 0.75),
+    2px 4px 5px rgba(122, 174, 195, 1);
+    width: 80px;
+    border: 0 !important;
+}
+
+div.vis-manipulation {
+    background: rgba(208,206,238,0) !important;
+    color: white !important;
+    text-shadow: 0 1px rgba(122, 174, 195, 0.15),
+    0 1px rgba(122, 174, 195, 0.3),
+    0 1px rgba(122, 174, 195, 0.45),
+    0 1px rgba(122, 174, 195, 0.65),
+    0 1px rgba(122, 174, 195, 0.75),
+    2px 4px 5px rgba(122, 174, 195, 1);
+}
+
+/*tooltip*/
+
+div.vis-tooltip::before {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    left: 0;
+    top: 30px;
+    height: 3px;
+    background: -webkit-linear-gradient(
+            left,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(212, 71, 73, 1) 50%,
+            rgba(0, 0, 0, 0) 100%
+    );
+}
+div.vis-tooltip {
+    font-size: small;
+    border: 0 !important;
+    border-radius: 5px;
+    min-width: 50px;
+    min-height: 50px;
+    padding: 10px;
+    box-shadow: 0 1px 4px #ddd !important;
+    background-color: rgba(46, 54, 56, 0.85) !important;
+    color: white !important;
+}
+div.vis-tooltip p {
+    font-size: 18px;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+div.vis-tooltip ol {
+    padding-left: 5px;
+    display: flex;
+    justify-content: space-evenly;
+    margin-right: 20px;
+}
+
+div.vis-tooltip ol > li:first-child {
+    min-width: 100px;
+    text-align: right;
+    color: rgba(241, 221, 56, 1);
+}
+
+div.vis-tooltip ol > li:nth-child(2) {
+    width: calc(100% - 110px);
+    color: white;
+  text-shadow: 0 1px rgba(122, 174, 195, 0.15), 0 1px rgba(122, 174, 195, 0.3), 0 1px rgba(122, 174, 195, 0.45), 0 1px rgba(122, 174, 195, 0.65), 0 1px rgba(122, 174, 195, 0.75), 2px 2px 3px rgba(122, 174, 195, 1);
+}
+
+div.vis-network div.vis-navigation div.vis-button:hover {
+    box-shadow: 0px 0px 10px 1px #ac85b4, 0 0 1px #ac85b4, 0 0 1px #ac85b4,
+    0 0 1px #ac85b4, 0 0 1px #ac85b4, 0 0 1px #ac85b4, 0 0 1px #ac85b4 !important;
+}
+
+div.vis-network div.vis-navigation div.vis-button:active {
+    box-shadow: 0px 0px 10px 1px #3b8cf8, 0 0 1px #3b8cf8, 0 0 1px #3b8cf8,
+    0 0 1px #3b8cf8, 0 0 1px #3b8cf8, 0 0 1px #3b8cf8, 0 0 1px #3b8cf8 !important;
+}

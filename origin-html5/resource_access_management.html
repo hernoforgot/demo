@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>资源入网管理</title>
+</head>
+<style type="text/css">
+    html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    ul > li {
+        list-style: none;
+    }
+
+    article {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /*头部高度固定*/
+    header {
+        height: 100px;
+    }
+
+    /*中间高度根据去除头尾后动态获取*/
+    main {
+        flex: 1;
+        display: flex;
+    }
+
+    /*尾部高度固定*/
+    footer {
+        height: 10px;
+    }
+
+    /*宽高动态获取*/
+    section {
+        display: flex;
+        flex: 1;
+    }
+
+    .layui-table-page {
+        text-align: right;
+    }
+
+    .layui-table td {
+        /* border-right: none;*/
+    }
+
+    ._item {
+        cursor: pointer;
+    }
+
+    .layui-form-label {
+        padding: 9px 0 !important;
+    }
+
+    textarea {
+        border-color: #11ea86 !important;
+        box-shadow: 0 0 0 3px rgba(90, 139, 255, 0.2);
+    }
+
+    .symbol {
+        width: 20px;
+        text-align: center
+    }
+
+    .countVal {
+        text-align: center;
+        width: 100px;
+    }
+    .split {
+        width: 4px;
+        height: 25px;
+        background: inherit;
+        background-color: rgba(31, 128, 206, 1);
+        border: none;
+        border-radius: 0;
+        -moz-box-shadow: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        margin-right: 15px;
+    }
+    .layui-form-item {
+        margin-bottom: 10px !important;
+    }
+</style>
+
+<link href="../../../../../nresource/cmdb/layui/css/layui.css" rel="stylesheet">
+<link href="../../../../../nresource/cmdb/layui/css/layui-personalized.css" rel="stylesheet">
+<link href="../../../../../nresource/cmdb/layui/css/formSelects-beautify.css" rel="stylesheet">
+<link href="../../../../../nresource/cmdb/layui/step/step.css" rel="stylesheet">
+<link rel="stylesheet" href="../../../../../nresource/cmdb/layui/ext/soulTable.css" media="all">
+<link href="../../../../../nresource/cmdb/css/animate/animate.css" rel="stylesheet">
+<script src="../../../../../nresource/cmdb/js/jquery.min.js"></script>
+<!-- <script src=".\subassembly\tree\js\jquery-1.4.4.min.js" type="text/javascript"></script> -->
+
+<script src="../../../../../nresource/cmdb/layui/layui.js"></script>
+<script src="../../../../../nresource/cmdb/js/common/common.js"></script>
+<script src="../../../../../nresource/cmdb/layui/step/step.js"></script>
+<script src="../../../../../nresource/cmdb/echarts/echarts.min.js"></script>
+<script src="../../../../../nresource/cmdb/SERVICE.js"></script>
+<body>
+<article class="animated fadeInLeft">
+    <header style="display: flex;justify-content : space-evenly;">
+        <blockquote class="_ma5">
+            <div class="_item center start" style="width: 150px"><i class="iconfont icon-success i-sty-success"
+                                                                    style="color:green"></i>
+                <div class="success"><p style="color:green">资源入网登记</p>
+                    <p style="color:green">.</p></div>
+                <i class="iconfont icon-changjiantou error i-m" style="color:red!important"></i></div>
+            <div class="_item center next" style="width: 150px"><i class="iconfont icon-error i-sty-error"
+                                                                   style="color:red"></i>
+                <div class="error"><p style="color:red">发起</p>
+                    <p>.</p></div>
+                <i class="iconfont icon-changjiantou error i-m" style="color:red!important"></i></div>
+            <div class="_item center audit" style="width: 150px"><i class="iconfont icon-error i-sty-error"
+                                                                    style="color:red"></i>
+                <div class="error"><p style="color:red">审批</p>
+                    <p>.</p></div>
+                <i class="iconfont icon-changjiantou error i-m" style="color:red!important"></i></div>
+            <div class="_item center finish" style="width: 150px"><i class="iconfont icon-error i-sty-error"
+                                                                     style="color:red"></i>
+                <div class="error"><p style="color:red">处理完成</p>
+                    <p>.</p></div>
+            </div>
+        </blockquote>
+    </header>
+    <main>
+        <section style="display: flex;">
+            <form class="layui-form" action="" style="width: 450px; height: 100%; margin: 0 10px;position: relative;">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">资源名称</label>
+                    <div class="layui-input-inline" style="margin-left: 30px; width: 200px;">
+                        <select   onchange="check()">
+                            <option value="">请选择资源名称</option>
+                            <option value="虚拟机">虚拟机</option>
+                            <option value="物理机">物理机</option>
+                            <option value="IDC资源">IDC资源</option>
+                            <option value="逻辑资源信息">逻辑资源信息</option>
+                            <option value="服务器">服务器</option>
+                        </select>
+                    </div>
+                </div>
+                <h3 style="display: flex;"><i class="split"></i><span style=" color: #1F80CE;">资源的基本信息：</span></h3>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所属宿主机</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="model"  lay-verify="model" autocomplete="off"
+                               placeholder="请输入所属宿主机"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">IP地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="model"  lay-verify="model" autocomplete="off"
+                               placeholder="请输入IP地址"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">虚拟机标识</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="model"  lay-verify="model" autocomplete="off"
+                               placeholder="请输入虚拟机标识"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">虚拟机名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="model"  lay-verify="model" autocomplete="off"
+                               placeholder="请输入虚拟机名称"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">设备状态</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="model"  lay-verify="model" autocomplete="off"
+                               placeholder="请输入设备状态"
+                               class="layui-input">
+                    </div>
+                </div>
+                <h3 style="display: flex;"><i class="split"></i><span style=" color: #1F80CE;">资源的详细信息：</span></h3>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">逻辑卷信息</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="model"  lay-verify="model" autocomplete="off"
+                               placeholder="请输入逻辑卷信息"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">CPU主频</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="model"  lay-verify="model" autocomplete="off"
+                               placeholder="请输入CPU主频"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">内存大小</label>
+                        <div class="layui-input-inline" style="margin-left: 30px; width: 150px;">
+                            <input type="text" name="number" autocomplete="off" class="layui-input myNumber"
+                                   placeholder="内存大小">
+                        </div>
+                        <div class="layui-form-mid"></div>
+                        <div class="layui-input-inline" style="width: 100px;">
+                            <select name="interest" lay-filter="aihao" lay-search>
+                                <option value="" selected>单位</option>
+                                <option value="1">TB</option>
+                                <option value="2">GB</option>
+                                <option value="3">MB</option>
+                                <option value="4">kB</option>
+                                <option value="5">Byte</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">磁盘大小</label>
+                        <div class="layui-input-inline" style="margin-left: 30px; width: 150px;">
+                            <input type="text" name="number" autocomplete="off" class="layui-input myNumber"
+                                   placeholder="磁盘大小">
+                        </div>
+                        <div class="layui-form-mid"></div>
+                        <div class="layui-input-inline" style="width: 100px;">
+                            <select name="interest" lay-filter="aihao" lay-search>
+                                <option value="" selected>单位</option>
+                                <option value="1">TB</option>
+                                <option value="2">GB</option>
+                                <option value="3">MB</option>
+                                <option value="4">kB</option>
+                                <option value="5">Byte</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">操作系统</label>
+                    <div class="layui-input-inline" style="margin-left: 30px; width: 200px;">
+                        <select name="choose">
+                            <option value="">请选择操作系统</option>
+                            <option value="Windows">Windows</option>
+                            <option value="Linux">Linux</option>
+                            <option value="iOS">iOS</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item" style="position: absolute; bottom: 0; left: 0; height: 40px; width: 100%">
+                    <div class="layui-input-block">
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">添加</button>
+                        <button type="reset" class="layui-btn layui-btn-primary" id="rest-bth">重置</button>
+                    </div>
+                </div>
+            </form>
+            <i style="width: 25px; height: 100%; display: flex;align-items: center;">
+                <img style="width: 25px; height: 25px;" src="../../../../../nresource/cmdb/images/topo/ref/arrow.png" width="25" height="25">
+            </i>
+            <blockquote style="display: flex; flex-direction: column;  flex: 1; width: 100%; height: 100%; margin: 0 10px; " class="myLocationDiv">
+                <h3 style="display: flex;"><i class="split"></i><span style=" color: #1F80CE;">虚拟机资源列表</span></h3>
+                <div style="flex: 1; width: 100%; height: 100%;">
+                    <table id="resourceListTable" lay-filter="resourceListTable"></table>
+                </div>
+                <aside style=" width: 100%; height: 40px; margin-bottom: 15px; text-align: center">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn" lay-filter="demo1" id="next">下一步</button>
+                        </div>
+                    </div>
+                </aside>
+            </blockquote>
+        </section>
+    </main>
+    <footer>
+
+    </footer>
+</article>
+<script type="text/javascript">
+    init();
+    function check() {
+        var value = $('select option:selected').val();
+ //获取被选中的option标签
+        alert(value);
+    }
+    var form, layer, soulTable, resourceListTable;
+    //引入自定义插件
+    layui.config({
+        base: '../../../../../nresource/cmdb/layui/searchTip/' //设置自定义插件路径:根据实际路径进行设置
+    }).use(['yutons_sug'], function () {
+        //创建yutons_sug搜索框提示插件||输入框提示插件实例
+        var yutons_sug = layui.yutons_sug;
+        //初始化部门输入提示框
+        yutons_sug.render({
+            id: "name", //设置容器唯一id
+            limit: 10,
+            type: 'sug', //设置输入框提示类型：sug-下拉框，sugTable-下拉表格
+            url: "../device-name.json" + "?params=" //设置异步数据接口,url为必填项
+        });
+    });
+    //检测模型是否已停用
+    // 自定义模块，这里只需要开放soulTable即可
+    layui.config({
+        base: '../../../../../nresource/cmdb/layui/ext/',   // 第三方模块所在目录
+        version: 'v1.5.19' // 插件版本号
+    }).extend({
+        soulTable: 'soulTable',
+        tableChild: 'tableChild',
+        tableMerge: 'tableMerge',
+        tableFilter: 'tableFilter',
+        excel: 'excel',
+    });
+    function init(){
+        layui.use(['layer', 'form', 'table', 'soulTable'], function () {
+            form = layui.form;
+            layer = layui.layer;
+            soulTable = layui.soulTable;
+            var table = layui.table;
+            //加载表头
+            var cols = [];
+            cols.push({
+                field: "host",
+                title: "所属宿主机"
+                , fixed: 'left'
+            })
+            cols.push({
+                field: "ip_address",
+                title: "IP地址"
+                , fixed: 'left'
+            });
+            cols.push({
+                field: "virtual_machine_identification",
+                title: "虚拟机标识"
+            })
+            cols.push({
+                field: "virtual_machine_name",
+                title: "虚拟机名称"
+            })
+            cols.push({
+                field: "equipment_status",
+                title: "设备状态"
+            })
+            cols.push({
+                field: "logical_volume_message",
+                title: "逻辑卷信息"
+            })
+            cols.push({
+                field: "dominant_fre",
+                title: "CPU主频"
+            })
+            cols.push({
+                field: "memory_size",
+                title: "内存大小"
+            })
+            cols.push({
+                field: "disk_size",
+                title: "磁盘大小"
+            })
+            cols.push({
+                field: "operating_system",
+                title: "操作系统"
+            })
+            var pageHeight = 400;
+            var defaultLimit = 5;
+            if (pageHeight >= 350) {
+                defaultLimit = 5 + Math.floor((pageHeight - 350) / 40)
+            }
+            var data = [];
+            var arr1= ["172.21.3.140","172.21.3.141","172.21.3.142","172.21.3.143","172.21.3.144"];
+            var arr2 = ["172.21.3.1","172.21.3.12","172.21.3.23","172.21.3.14","172.21.3.15"];
+            var arr3 = ["Vmware资源池_TEST","Hyper-v资源池_TEST","Vmware资源池_测试","VMware资源池_DMZ","Hyper-s资源池_TEST"];
+            var arr4 = ["172.21.3.14(huojla@RabbitMQ演示环境)","172.21.3.17(huojla@RabbitMq测试环境)",
+                "199-WO家业务平台高凤玉200已被占用","181-掌上汇通（原104）已关停端口",
+                "172.21.3.30-cqdx-nginx-1-liwei"];
+            var arr5 = ["512Hz","1024Hz","500Hz","390Hz","800Hz"];
+            var arr6 = ["1024MB","2TB","8GB","512MB","80TB"];
+            var arr7 = ["8GB","512MB","80KB","1024MB","2TB",];
+            for(var i = 0; i < 5; i ++) {
+                data.push({
+                    id: i + 1,
+                    type: "新增",
+                    host: arr1[i],
+                    ip_address: arr2[i],
+                    virtual_machine_identification: arr3[i],
+                    virtual_machine_name: arr4[i],
+                    equipment_status:i==1 ? "可用" : i == 3 ? "禁用" : "正常",
+                    logical_volume_message: i==1 ? "不可用" : "可正常使用",
+                    dominant_fre: arr5[i],
+                    memory_size: arr6[i],
+                    disk_size: arr7[i],
+                    operating_system: i==1 ? "Windows" : i == 3 ? "Linux" : "iOS",
+                })
+            }
+            resourceListTable = table.render({
+                elem: '#resourceListTable'
+                , height: $(document).height() - $('#resourceListTable').offset().top - 20 - 170
+                , data: data
+                , toolbar: false
+                , defaultToolbar: false
+                , title: '资源信息列表'
+                , cols: [cols]
+                , request: {
+                    pageName: 'currentPage'
+                    , limitName: 'pageLimit'
+                }
+                , response: {
+                    statusCode: true
+                    , countName: 'total'
+                }
+                , parseData: function (res) {
+                    return {
+                        "code": res.success,
+                        "data": res.result ? res.result.list : [],
+                        "total": res.result ? res.result.totalCount : 0,
+                    };
+                }
+                , where: {}
+                , page: {
+                    theme: '#1E9FFF'
+                    , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                    , limit: defaultLimit
+                    , limits: [10, 20, 50, 100, 500]
+                }
+                , soulSort: false
+                , filter: {
+                    clearFilter: true
+                    , items: ['column', 'condition', 'editCondition']
+                    , cache: false
+                    , bottom: false
+                }
+                , overflow: {
+                    type: 'tips'
+                    , hoverTime: 200
+                    , color: 'white'
+                    , bgColor: '#2D2D2D'
+                }
+                , autoColumnWidth: {
+                    init: true
+                }
+                , contextmenu: {
+                    header: false,
+                    body: [
+                        {
+                            name: '复制',
+                            icon: 'layui-icon layui-icon-template',
+                            click: function (obj) {
+                                soulTable.copy(obj.text)
+                                layer.msg('复制成功！')
+                            }
+                        },
+                        {
+                            name: '行-背景颜色标记',
+                            icon: 'layui-icon layui-icon-theme',
+                            click: function (obj) {
+                                if (obj.trElem && obj.trElem.css("background-color") == 'rgb(204, 232, 207)') {
+                                    obj.trElem.css('background', '')
+                                    return;
+                                }
+                                obj.trElem.css('background', '#CCE8CF')
+                            }
+                        },
+                        {
+                            name: '字体标记',
+                            icon: 'layui-icon layui-icon-theme',
+                            click: function (obj) {
+                                if (obj.elem.hasClass("lightFont")) {
+                                    obj.elem.removeClass("lightFont");
+                                    return;
+                                }
+                                obj.elem.addClass('lightFont');
+                            }
+                        },
+                        {
+                            name: '刷新表格',
+                            icon: 'layui-icon layui-icon-refresh-1',
+                            click: function (obj) {
+                                resourceListTable.reload({
+                                    where: {}
+                                    , page: {
+                                        theme: '#1E9FFF'
+                                        , curr: 1
+                                    }
+                                });
+                            }
+                        }
+                    ],
+                    total: false
+                }
+                , done: function (res, curr, count) {
+                    $('table th').css({'background-color': '#E9F6FB', 'color': '#0180CC', 'font-weight': 'bold'})
+                    // 设置表格标题颜色
+                    // 设置表格偶数列颜色
+                    var that = this.elem.next();
+                    for (var i in res.data) {		//遍历整个表格数据
+                        if (i % 2 == 1) {
+                            that.find('.layui-table-box tr[data-index="' + i + '"]').css({'background-color': '#f5fbff'});
+                        }
+                    }
+                    soulTable.render(this);
+                }
+            });
+        });
+    }
+
+
+    $(".finish").click(function () {
+        window.location.href = "./resource_access_management_finish.html";
+    })
+
+    $("#next").click(function () {
+        window.location.href = "./resource_access_management_next.html";
+    })
+
+
+
+
+</script>
+</body>
+</html>

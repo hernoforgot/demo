@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IT资源管理平台</title>
+  <style type="text/css">
+
+    html,
+    body {
+      width: 100%;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    body {
+      background: #ebebeb !important;
+      display: flex;
+      flex-direction: column;
+    }
+
+    *,
+    *::before,
+    *::after {
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+      background-color: #f4f4f4;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      border-radius: 50px;
+      background-color: #afb3bf !important;
+    }
+
+    a:hover {
+      cursor: pointer;
+    }
+
+    ul, ol {
+      padding: 0;
+      margin: 0;
+    }
+
+    ul > li, ol > li {
+      list-style: none;
+      margin-bottom: 10px;
+    }
+
+    header svg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      margin: 0 auto 5px auto;
+    }
+
+    header {
+      padding-top: 10px;
+      width: 100%;
+      height: 70px;
+      text-align: center;
+      color: rgba(253, 255, 255, 1);
+      font-weight: bolder;
+      position: relative;
+      background: linear-gradient(-90deg, rgba(15, 45, 255, 0.92), rgba(232, 229, 229, 0.8));
+    }
+
+    header > p {
+      font-size: 1.4em;
+      height: 40px;
+      margin: 5px 5px;
+      text-shadow: 0 1px rgba(122, 174, 195, 0.15), 0 1px rgba(122, 174, 195, 0.3),
+      0 1px rgba(122, 174, 195, 0.45), 0 1px rgba(122, 174, 195, 0.65),
+      0 1px rgba(122, 174, 195, 0.75), 2px 4px 5px rgba(122, 174, 195, 1);
+      /* border: 1px solid #21A5CA;*/
+      /*  clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%);*/
+    }
+
+    header > blockquote {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 200px;
+      height: 30px;
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+    section > blockquote {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 300px;
+      height: 35px;
+    }
+
+    .viewDetail {
+      font-size: small;
+      border-radius: 5px;
+      min-width: 120px;
+      padding: 5px;
+      box-shadow: 0 1px 4px #ddd;
+      color: black;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .viewDetail ul {
+      display: flex;
+      justify-content: space-evenly;
+      line-height: 20px;
+    }
+
+    .viewDetail ul li:first-child {
+      width: 120px;
+      text-align: right;
+      color: #999;
+    }
+
+    .viewDetail ul li:nth-child(2) {
+      text-shadow: 0 1px rgba(122, 174, 195, 0.15), 0 1px rgba(122, 174, 195, 0.3),
+      0 1px rgba(122, 174, 195, 0.45), 0 1px rgba(122, 174, 195, 0.65),
+      0 1px rgba(122, 174, 195, 0.75), 2px 4px 5px rgba(122, 174, 195, 1);
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      /*width: calc(100% - 80px);
+      overflow-wrap: break-word;
+      word-break: break-word;
+      word-wrap: break-word;*/
+    }
+
+    main > aside > blockquote {
+      height: 200px;
+      width: 100%;
+    }
+
+    main > aside > .resourceDetailShow {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      margin-top: 45px;
+      position: relative;
+      display: flex;
+    }
+
+    .resourceDetailShow::after {
+      content: attr(data-word);
+      display: inline-block;
+      width: 100%;
+      height: 25px;
+      text-align: left;
+      color: #0d2da3;
+      font-size: 16px;
+      padding-left: 10px;
+      position: absolute;
+      top: -25px;
+      left: 0;
+    }
+
+    main {
+      position: relative;
+      display: flex;
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      flex-wrap: nowrap;
+    }
+
+    main > aside:first-child {
+      width: 250px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #BDCFE4;
+      background: white;
+    }
+
+    main > aside:last-child {
+      width: 500px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #BDCFE4;
+      background: white;
+    }
+
+    main > section {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: white;
+    }
+
+    main > section > #myTopo {
+      width: 100%;
+      height: 100%;
+      flex: 1;
+    }
+
+    main > section > nav {
+      position: absolute;
+      width: 20px;
+      height: 100px;
+      top: 50%;
+    }
+
+
+    .searchTree {
+      height: 40px;
+      width: 100%;
+      border: 0;
+      border-radius: 5px;
+      padding-left: 10px;
+    }
+
+    #treeDemo {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+    }
+
+    main > aside input[type='text'] {
+      padding-left: 10px;
+      box-shadow: 0px 0px 10px 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5;
+      height: 30px;
+    }
+
+    input[id^="searchInput"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      transition: all 1s;
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      height: 0;
+      border: 0;
+      box-shadow: 0px 0px 10px 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5;
+      border-radius: 5px;
+      padding-left: 10px;
+      color: #0a0101;
+      background: rgba(0, 0, 0, 0);
+    }
+
+
+    .searchResult {
+      position: absolute;
+      top: 40px;
+      right: 55px;
+      width: 0;
+      height: 0;
+      color: white;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: rgba(0, 0, 0, 0.618);
+      transition: all 1s;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .searchResult > p {
+      height: 30px;
+      line-height: 30px;
+      padding-left: 10px;
+      color: #f7f7f7;
+      cursor: pointer;
+    }
+
+    .searchResult > p:hover {
+      color: orange;
+    }
+
+    #searchKeyword {
+      margin: 10px 10px;
+      transition: all 1s;
+      width: 350px;
+      height: 30px;
+      border: 0;
+      box-shadow: 0px 0px 10px 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5, 0 0 1px #3F51B5;
+      border-radius: 5px;
+      padding-left: 10px;
+      color: #0a0101;
+      background: rgba(0, 0, 0, 0);
+    }
+
+    #clickToSearch {
+      width: 100px;
+      height: 30px;
+      margin: 10px 10px;
+      color: #409eff;
+      line-height: 30px;
+      background: #ecf5ff;
+      border-color: #b3d8ff;
+    }
+
+  </style>
+  <link rel="stylesheet" href="../../../../subassembly/visJs/vis.min.css">
+  <link rel="stylesheet" href="../../../../subassembly/visJs/vis-reset.css">
+  <link rel="stylesheet" href="../../../../css/animate/animate.css">
+  <link href="../../../../subassembly/layui/css/layui.css" rel="stylesheet">
+  <link href="../../../../subassembly/tree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+  <link href="./checkboxGroup.css" rel="stylesheet">
+  <link href="./viewDetail.css" rel="stylesheet">
+  <script src="../../../../js/common/jquery-3.5.1.min.js"></script>
+  <script src="../../../../subassembly/layui/layui.js"></script>
+  <script src="../../../../subassembly/visJs/vis.min.js"></script>
+
+  <script src="../../../../subassembly/tree/js/jquery.ztree.core.min.js"></script>
+  <script src="../../../../subassembly/tree/js/jquery.ztree.exedit.min.js"></script>
+  <script type="text/javascript" src="../../../../subassembly/tree/js/jquery.ztree.excheck.js"></script>
+  <script type="text/javascript" src="../../../../subassembly/tree/js/jquery.ztree.exhide.js"></script>
+  <script type="text/javascript" src="../../../../subassembly/tree/js/fuzzysearch.js"></script>
+
+  <script src="../../../../js/echarts/echarts.min.js" type="text/javascript"></script>
+  <script src="../../../../js/common/common.js" type="text/javascript"></script>
+  <script src="../../../../js/common/underscore-min.js" type="text/javascript"></script>
+
+  <script src="./viewDetail.js" type="text/javascript"></script>
+</head>
+<body>
+<header>
+  <svg width="600px" height="100%" xmlns="http://www.w3.org/2000/svg" stroke="null"
+       style="vector-effect: non-scaling-stroke;">
+    <defs>
+      <linearGradient id="blue_line" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" style="stop-color: rgba(36,99,136, 0.65);"/>
+        <stop offset="50%" style="stop-color: rgba(36,99,136, 0.4);"/>
+        <stop offset="100%" style="stop-color: rgba(36,99,136, 0.65);"/>
+      </linearGradient>
+    </defs>
+    <g stroke="url(#blue_line)" stroke-width="2">
+      <line id="svg_9" y2="85%" x2="84.5%" y1="75%" x1="83%"/>
+      <line id="svg_11" y2="20%" x2="2%" y1="0" x1="0"/>
+      <line id="svg_12" y2="100%" x2="16%" y1="100%" x1="12%"/>
+      <line id="svg_13" y2="90%" x2="17%" y1="100%" x1="16%"/>
+      <line id="svg_14" y2="90%" x2="83%" y1="90%" x1="17%"/>
+      <line id="svg_15" y2="100%" x2="84%" y1="90%" x1="83%"/>
+      <line id="svg_16" y2="100%" x2="88%" y1="100%" x1="84%"/>
+      <line id="svg_17" y2="20%" x2="92.5%" y1="85%" x1="87.5%"/>
+      <line id="svg_18" y2="20%" x2="98%" y1="20%" x1="94%"/>
+      <line id="svg_19" y2="0%" x2="100%" y1="20%" x1="98%"/>
+      <line id="svg_20" y2="100%" x2="12%" y1="20%" x1="6%"/>
+      <line id="svg_21" y2="85%" x2="82.5%" y1="85%" x1="17.5%"/>
+      <line id="svg_23" y2="20%" x2="92.5%" y1="20%" x1="7.5%"/>
+      <line id="svg_24" y2="85%" x2="12.5%" y1="20%" x1="7.5%"/>
+      <line id="svg_25" y2="85%" x2="87.5%" y1="85%" x1="84.5%"/>
+      <line id="svg_26" y2="20%" x2="94%" y1="100%" x1="88%"/>
+      <line id="svg_27" y2="80%" x2="18%" y1="85%" x1="17.5%"/>
+      <line id="svg_28" y2="75%" x2="83%" y1="75%" x1="16.5%"/>
+      <line id="svg_29" y2="85%" x2="82.5%" y1="80%" x1="82%"/>
+      <line id="svg_30" y2="80%" x2="18%" y1="80%" x1="82%"/>
+      <line x1="2%" y1="20%" x2="6%" y2="20%" id="svg_1"/>
+      <line x1="12.5%" y1="85%" x2="15.5%" y2="85%" id="svg_2"/>
+      <line x1="16.5%" y1="75%" x2="15.5%" y2="85%" id="svg_3"/>
+    </g>
+  </svg>
+  <p><span id="platform">CRM运维平台</span>影响分析</p>
+  <blockquote style="display: none;">
+    <input data-type="tab" id="openTab1" type="radio" name="tab" value="1" checked="checked"/>
+    <label for="openTab1"><img src="../../../../img/topo/icon/detail.svg" width="20"
+                               height="20"></label>
+    <input data-type="tab" id="openTab3" type="radio" name="tab" value="3"/>
+    <label for="openTab3" id="tab3"><img
+      src="../../../../img/topo/icon/performs.svg" width="20"
+      height="20"></label>
+    <input data-type="tab" id="openTab4" type="radio" name="tab" value="4"/>
+    <label for="openTab4" id="tab4"><img
+      src="../../../../img/topo/icon/alarm.svg" width="20"
+      height="20"></label>
+  </blockquote>
+  <aside></aside>
+</header>
+<main>
+  <aside style="display: none;" class="busiClassDiv">
+    <input type="text" class="searchTree" id="mySearchId" placeholder="业务系统">
+    <ul id="treeDemo" class="ztree"
+        style="border: 0;border-radius: 5px;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"></ul>
+  </aside>
+  <section>
+    <div id="myTopo"></div>
+    <input type="button" class="backToLast" title="返回">
+    <input type="button" class="nextToNode" title="前进">
+    <blockquote class="search">
+      <input data-type="tab" id="searchIcon" type="checkbox" name="searchGroup"/>
+      <label for="searchIcon" title="搜索"></label>
+      <input type="text" id="searchInput" placeholder="输入主机关键字搜索">
+      <nav class="searchResult"></nav>
+    </blockquote>
+    <nav style="left: 0">
+      <input data-type="tab" id="changeTabLeft" type="checkbox" value="1"/>
+      <label for="changeTabLeft"><img src="../../../../img/topo/icon/arrow.svg" width="20"
+                                      height="100"></label>
+    </nav>
+    <nav style="right: 0">
+      <input data-type="tab" id="changeTabRight" type="checkbox" value="1" checked/>
+      <label for="changeTabRight"><img src="../../../../img/topo/icon/arrow.svg" width="20"
+                                       height="100"></label>
+    </nav>
+  </section>
+  <aside class="detailDiv">
+    <blockquote style="position: relative;height: 80px; display: flex; flex-wrap: wrap">
+      <input type="text" id="searchKeyword" placeholder="输入关键字搜索">
+      <button id="clickToSearch">关键字搜索</button>
+      <p style="padding-left: 10px"><a class="pauseScroll">暂停</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+        class="toScroll">滚动</a></p>
+    </blockquote>
+    <blockquote style="overflow-y: auto; overflow-x: hidden;display: none;">
+      <input data-type="tab" id="situation1" type="checkbox" value="1" checked/>
+      <label for="situation1">业务系统概况</label>
+      <nav class="viewDetail">
+        <ul>
+          <li>主机总数：</li>
+          <li>230台</li>
+        </ul>
+        <ul>
+          <li>WEB层主机：</li>
+          <li>54台</li>
+        </ul>
+        <ul>
+          <li>应用层主机：</li>
+          <li>43台</li>
+        </ul>
+        <ul>
+          <li>数据库层主机：</li>
+          <li>21台</li>
+        </ul>
+        <ul>
+          <li>数据库：</li>
+          <li>70个</li>
+        </ul>
+        <ul>
+          <li>中间件：</li>
+          <li>256个</li>
+        </ul>
+      </nav>
+      <input data-type="tab" id="situation3" type="checkbox" value="3" checked/>
+      <label for="situation3">异常检测</label>
+      <nav class="viewDetail">
+        <ul>
+          <li>应用检测：</li>
+          <li><span><a>230个</a></span></li>
+        </ul>
+        <ul>
+          <li>主机检测：</li>
+          <li><span><a>60台</a></span></li>
+        </ul>
+        <ul>
+          <li>数据库检测：</li>
+          <li><span><a>50个</a></span></li>
+        </ul>
+        <ul>
+          <li>网络检测：</li>
+          <li><span><a>30台</a></span></li>
+        </ul>
+        <ul>
+          <li>中间件检测：</li>
+          <li><span><a>59个</a></span></li>
+        </ul>
+      </nav>
+      <input data-type="tab" id="situation4" type="checkbox" value="4" checked/>
+      <label for="situation4">故障治愈</label>
+      <nav class="viewDetail">
+        <ul>
+          <li>主机故障：</li>
+          <li>今日故障数<span><a>56</a></span>/自愈成功数<span><a>50</a></span></li>
+        </ul>
+        <ul>
+          <li>数据库故障：</li>
+          <li>今日故障数<span><a>12</a></span>/自愈成功数<span><a>5</a></span></li>
+        </ul>
+        <ul>
+          <li>应用故障：</li>
+          <li>今日故障数<span><a>12</a></span>/自愈成功数<span><a>5</a></span></li>
+        </ul>
+        <ul>
+          <li>网络故障：</li>
+          <li>今日故障数<span><a>12</a></span>/自愈成功数<span><a>5</a></span></li>
+        </ul>
+      </nav>
+
+      <input data-type="tab" id="situation2" type="checkbox" value="2"/>
+      <label for="situation2">监控告警</label>
+      <nav class="viewDetail">
+        <ul>
+          <li>主机严重告警：</li>
+          <li>40台</li>
+        </ul>
+        <ul>
+          <li>主机重要告警：</li>
+          <li>82台</li>
+        </ul>
+        <ul>
+          <li>主机一般告警：</li>
+          <li>178台</li>
+        </ul>
+
+        <ul>
+          <li>数据库严重告警：</li>
+          <li>40台</li>
+        </ul>
+        <ul>
+          <li>数据库重要告警：</li>
+          <li>82台</li>
+        </ul>
+        <ul>
+          <li>数据库一般告警：</li>
+          <li>178台</li>
+        </ul>
+
+        <ul>
+          <li>网络严重告警：</li>
+          <li>40台</li>
+        </ul>
+        <ul>
+          <li>网络重要告警：</li>
+          <li>82台</li>
+        </ul>
+        <ul>
+          <li>网络一般告警：</li>
+          <li>178台</li>
+        </ul>
+
+        <ul>
+          <li>应用严重告警：</li>
+          <li>40台</li>
+        </ul>
+        <ul>
+          <li>应用重要告警：</li>
+          <li>82台</li>
+        </ul>
+        <ul>
+          <li>应用一般告警：</li>
+          <li>178台</li>
+        </ul>
+      </nav>
+
+      <input data-type="tab" id="situation5" type="checkbox" value="4"/>
+      <label for="situation5">日常巡检</label>
+      <nav class="viewDetail">
+        <ul>
+          <li>正常主机数：</li>
+          <li><span><a>120台</a></span></li>
+        </ul>
+        <ul>
+          <li>异常主机数：</li>
+          <li><span><a>10台</a></span></li>
+        </ul>
+        <ul>
+          <li>正常指标：</li>
+          <li><span><a>80个</a></span></li>
+        </ul>
+        <ul>
+          <li>异常指标：</li>
+          <li><span><a>21个</a></span></li>
+        </ul>
+      </nav>
+    </blockquote>
+    <div class="resourceDetailShow" data-word="数据影响详情(双击定位)">
+      <div style="overflow: hidden;">
+        <article class="dataScroll">
+          <section data-id="paas8">
+            <p>主机告警</p>
+            <ul>
+              <li>告警来源：</li>
+              <li>BOMC</li>
+            </ul>
+            <ul>
+              <li>告警原因：</li>
+              <li>192.168.1.1主机CPU达到96%</li>
+            </ul>
+            <ul>
+              <li>告警首次发生时间：</li>
+              <li>2021年4月28日16:23:56</li>
+            </ul>
+            <ul>
+              <li>受影响主机：</li>
+              <li>192.168.1.1</li>
+            </ul>
+            <ul>
+              <li>受影响系统：</li>
+              <li>CBOSS系统</li>
+            </ul>
+          </section>
+          <section data-id="paas8">
+            <p>数据库异常检测</p>
+            <ul>
+              <li>异常检测来源：</li>
+              <li>AIops</li>
+            </ul>
+            <ul>
+              <li>异常原因：</li>
+              <li>192.168.12.11数据库执行异常SQL，SQL: select * from v$version;</li>
+            </ul>
+            <ul>
+              <li>发生异常时间：</li>
+              <li>2021年4月28日16:23:56</li>
+            </ul>
+            <ul>
+              <li>受影响主机：</li>
+              <li>192.168.1.2</li>
+            </ul>
+            <ul>
+              <li>受影响系统：</li>
+              <li>CBOSS系统</li>
+            </ul>
+          </section>
+          <section data-id="paas8">
+            <p>日常巡检</p>
+            <ul>
+              <li>巡检来源：</li>
+              <li>自动化运维</li>
+            </ul>
+            <ul>
+              <li>巡检异常结果：</li>
+              <li>192.168.12.11主机容量已满</li>
+            </ul>
+            <ul>
+              <li>发生异常时间：</li>
+              <li>2021年4月28日16:23:56</li>
+            </ul>
+            <ul>
+              <li>受影响主机：</li>
+              <li>192.168.1.2，192.168.1.34，192.168.1.3</li>
+            </ul>
+            <ul>
+              <li>受影响系统：</li>
+              <li>CBOSS系统</li>
+            </ul>
+          </section>
+          <section data-id="paas8">
+            <p>应用进程僵死</p>
+            <ul>
+              <li>检测来源：</li>
+              <li>AIops</li>
+            </ul>
+            <ul>
+              <li>检测异常结果：</li>
+              <li>192.168.12.1主机上CRM用户web-start服务进程僵死</li>
+            </ul>
+            <ul>
+              <li>发生异常时间：</li>
+              <li>2021年4月28日16:23:56</li>
+            </ul>
+            <ul>
+              <li>受影响主机：</li>
+              <li>192.168.1.2</li>
+            </ul>
+            <ul>
+              <li>受影响系统：</li>
+              <li>CBOSS系统</li>
+            </ul>
+          </section>
+          <section data-id="paas8">
+            <p>数据库检测异常</p>
+            <ul>
+              <li>检测来源：</li>
+              <li>AIops</li>
+            </ul>
+            <ul>
+              <li>检测异常结果：</li>
+              <li>192.168.12.1主机上的订单数据库ord_db表空间占满</li>
+            </ul>
+            <ul>
+              <li>发生异常时间：</li>
+              <li>2021年4月28日16:23:56</li>
+            </ul>
+            <ul>
+              <li>受影响主机：</li>
+              <li>192.168.1.2</li>
+            </ul>
+            <ul>
+              <li>受影响系统：</li>
+              <li>CBOSS系统</li>
+            </ul>
+          </section>
+        </article>
+      </div>
+    </div>
+  </aside>
+</main>
+<script>
+
+  var nodesConfig = "";
+  var edgesConfig = "";
+  var network = null;
+  var interval = null;
+  var timeout = null;
+  var initOption =  {
+    locale: 'cn',
+    /*layout: {
+      hierarchical: {
+        nodeSpacing: 100,
+        direction: 'LR',
+      },
+    },*/
+    interaction: {
+      // 启用操作按钮
+      navigationButtons: true,
+      keyboard: true,
+      /*启用鼠标聚焦事件*/
+      hover: true,
+      //  dragNodes: false,// 是否允许拖拽
+    },
+    // 不启用节点操作
+    manipulation: {
+      enabled: false,
+      initiallyActive: true,
+      addNode: false,
+      addEdge: false,
+      editEdge: false,
+      deleteNode: false,
+      deleteEdge: false,
+      controlNodeStyle: {}
+    },
+    physics: {
+      enabled: false,
+      stabilization: false,
+      barnesHut: {
+        centralGravity: 0.1,
+        gravitationalConstant: -8000
+      },
+      repulsion: {
+        nodeDistance: 100, //(默认100，排斥的影响范围)
+      }
+    },
+    nodes: {
+      /*节点字体位置*/
+      shape: "dot",
+      /*缩小到一定程度才能查看字体*/
+      /*节点(图标)大小*/
+      size: 18,
+      font: {
+        /*全局设置拓扑图字体*/
+        color: '#000711',
+        face: 'arial',
+      }
+    },
+    edges: {
+      /*全局设置箭头风格*/
+      arrows: {
+        to: {enabled: true, scaleFactor: 0.5, type: 'arrow'},
+      },
+      font: {
+        color: '#0841ee',
+        size: 18, // px
+      },
+      color: {color: "#0ca361", opacity: 0.68},
+      shadow: false,
+      /*全局设置线条虚线风格*/
+      dashes: true,
+      labelHighlightBold: false,
+      arrowStrikethrough: false,//关系线与节点处无缝隙
+    }
+  };
+  function destroy() {
+    if (network !== null) {
+      network.destroy();
+      network = null;
+    }
+  }
+
+  var options = initOption;
+
+  function draw() {
+    destroy();
+    // create a network
+    var container = document.getElementById("myTopo");
+    var data = {
+      nodes: nodesConfig,
+      edges: edgesConfig,
+    };
+    network = new vis.Network(container, data, options);
+
+    /**
+     * TODO 单击事件
+     */
+    network.on("click", function (params) {
+      if (!params.nodes || params.nodes.length == 0) {
+        $(".custom-menu").hide();
+        return;
+      }
+      var id = params.nodes[0];
+      if (!id) {
+        return;
+      }
+    });
+
+    /**
+     * TODO 双击事件
+     */
+    network.on("doubleClick", function (params) {
+      if (!params.nodes || params.nodes.length == 0) {
+        return;
+      }
+
+      // 聚焦到某个节点，节点多的时候非常方便
+      // console.log(params)
+     // params.nodes = params.nodes instanceof Array ? params.nodes[0] : params.nodes;
+     // var item = nodesConfig.get(params.nodes)
+     var  item = {id: "11-13-25", name: "CBOSS", label: "CBOSS"};
+     // item.label = item.alarm ? item.name : item.label;
+      var nodes = [{
+        id: item.id + "-host-1",
+        label: "192.168.1.1",
+        name: "192.168.1.1",
+        alarm: "192.168.1.1受到影响",
+        shape: "image",
+        image: "../../../../img/topo/node/host/host.svg",
+        originImage: "../../../../img/topo/node/host/host.svg",
+        alarmImage: "../../../../img/topo/node/host/host1.svg",
+        title: `<p>${item.label}</p>
+                <ol><li>业务负责人：</li><li>管理员</li></ol>
+                <ol><li>告警内容：</li><li>数据库db_user表空间已将近96%</li></ol>
+                <ol><li>故障治愈：</li><li>数据库crm_test账号被锁定</li></ol>
+                <ol><li>故障治愈：</li><li>数据库crm_test账号被锁定</li></ol>
+                <ol><li>数据库检测：</li><li>数据库表tb_crm表被锁定</li></ol>
+                <ol><li>数据库检测：</li><li>数据库表tb_crm_test表被锁定</li></ol>
+                <ol><li>数据库检测：</li><li>数据库执行异常SQL，SQL: select * from v$version;</li></ol>`
+      },
+        {id: item.id + "-host-2", label: "192.168.1.2", shape: "image", image: "../../../../img/topo/node/host/host.svg"},
+        {id: item.id + "-host-3", label: "192.168.1.3", shape: "image", image: "../../../../img/topo/node/host/host.svg"},
+        {id: item.id + "-host-4", label: "192.168.1.4", shape: "image", image: "../../../../img/topo/node/host/host.svg"},
+        {id: item.id + "-host-5", label: "192.168.1.5", shape: "image",  image: "../../../../img/topo/node/host/host.svg"},
+        {id: item.id + "-host-6", label: "192.168.1.6", shape: "image", image: "../../../../img/topo/node/host/host.svg"},
+        {id: item.id + "-host-7", label: "192.168.1.7", shape: "image", image: "../../../../img/topo/node/host/host.svg"},
+        {id: item.id + "-host-8", label: "192.168.1.8", shape: "image", image: "../../../../img/topo/node/host/host.svg"},
+        {id: item.id + "-host-9", label: "192.168.1.9", shape: "image", image: "../../../../img/topo/node/host/host.svg"},
+        {id: item.id + "-host-10",label: "192.168.1.10", name: "192.168.1.10", alarm: "该主机CPU达到96%",
+          shape: "image",
+          image: "../../../../img/topo/node/host/host.svg",
+          originImage: "../../../../img/topo/node/host/host.svg",
+          alarmImage: "../../../../img/topo/node/host/host1.svg",
+          title: `<p>${item.label}</p>
+                <ol><li>业务负责人：</li><li>管理员</li></ol>
+                <ol><li>告警内容：</li><li>数据库db_user表空间已将近96%</li></ol>
+                <ol><li>故障治愈：</li><li>数据库crm_test账号被锁定</li></ol>
+                <ol><li>故障治愈：</li><li>数据库crm_test账号被锁定</li></ol>
+                <ol><li>数据库检测：</li><li>数据库表tb_crm表被锁定</li></ol>
+                <ol><li>数据库检测：</li><li>数据库表tb_crm_test表被锁定</li></ol>
+                <ol><li>数据库检测：</li><li>数据库执行异常SQL，SQL: select * from v$version;</li></ol>`}];
+      var edges = [];
+      for (var i = 0; i < nodes.length; i++) {
+        edges.push({
+          from: item.id,
+          to: nodes[i].id
+        })
+      }
+      nodes.push(item);
+      nodes.push({
+        id: item.id + "-db-1",
+        label: "192.168.1.1_DB数据库",
+        name:  "192.168.1.1_DB数据库",
+        alarm: "数据库db_user表空间已将近96%",
+        shape: "image",
+        image: "../../../../img/topo/node/db/db.svg",
+        originImage: "../../../../img/topo/node/db/db.svg",
+        alarmImage: "../../../../img/topo/node/db/db1.svg",
+        title: `<p>${item.label}</p>
+                <ol><li>业务负责人：</li><li>管理员</li></ol>
+                <ol><li>告警内容：</li><li>数据库db_user表空间已将近96%</li></ol>
+                <ol><li>故障治愈：</li><li>数据库crm_test账号被锁定</li></ol>
+                <ol><li>故障治愈：</li><li>数据库crm_test账号被锁定</li></ol>
+                <ol><li>数据库检测：</li><li>数据库表tb_crm表被锁定</li></ol>
+                <ol><li>数据库检测：</li><li>数据库表tb_crm_test表被锁定</li></ol>
+                <ol><li>数据库检测：</li><li>数据库执行异常SQL，SQL: select * from v$version;</li></ol>`
+      })
+      nodes.push({
+        id: item.id + "-mid-10",
+        label: item.label + "_tomcat中间件",
+        name: item.label + "_tomcat中间件",
+        alarm: "_tomcat中间件进程已停止",
+        shape: "image",
+        image: "../../../../img/topo/node/mid/mid.svg",
+        originImage: "../../../../img/topo/node/mid/mid.svg",
+        alarmImage: "../../../../img/topo/node/mid/mid1.svg",
+        title: `<p>${item.laebl}</p>
+                <ol><li>业务负责人：</li><li>管理员</li></ol>
+                <ol><li>告警内容：</li><li>数据库db_user表空间已将近96%</li></ol>
+                <ol><li>故障治愈：</li><li>数据库crm_test账号被锁定</li></ol>
+                <ol><li>故障治愈：</li><li>数据库crm_test账号被锁定</li></ol>
+                <ol><li>数据库检测：</li><li>数据库表tb_crm表被锁定</li></ol>
+                <ol><li>数据库检测：</li><li>数据库表tb_crm_test表被锁定</li></ol>
+                <ol><li>数据库检测：</li><li>数据库执行异常SQL，SQL: select * from v$version;</li></ol>`
+      })
+      edges.push({
+        from: item.id + "-host-1",
+        to: item.id + "-db-1"
+      }),
+        edges.push({
+          from: item.id + "-host-10",
+          to: item.id + "-mid-10"
+        })
+      options = {
+        locale: 'cn',
+        layout: {
+          hierarchical: false
+        },
+        interaction: {
+          // 启用操作按钮
+          navigationButtons: true,
+          keyboard: true,
+          /*启用鼠标聚焦事件*/
+          hover: true
+        },
+        // 不启用节点操作
+        manipulation: {
+          enabled: false,
+          initiallyActive: true,
+          addNode: false,
+          addEdge: false,
+          editEdge: false,
+          deleteNode: false,
+          deleteEdge: false,
+          controlNodeStyle: {}
+        },
+        physics: {
+          enabled: true,
+          stabilization: false,
+          barnesHut: {
+            gravitationalConstant: -20000
+          },
+          repulsion: {
+            nodeDistance: 100, //(默认100，排斥的影响范围)
+          }
+        },
+        nodes: {
+          /*节点字体位置*/
+          shape: "dot",
+          /*缩小到一定程度才能查看字体*/
+          /*节点(图标)大小*/
+          size: 18,
+          font: {
+            /*全局设置拓扑图字体*/
+            color: 'black',
+            face: 'arial',
+          }
+        },
+        edges: {
+          /*全局设置箭头风格*/
+          arrows: {
+            to: {enabled: true, scaleFactor: 0.5, type: 'arrow'},
+          },
+          font: {
+            color: '#a0baff',
+            size: 0, // px
+          },
+          color: {color: "#0ca361", opacity: 0.68},
+          shadow: false,
+          /*全局设置线条虚线风格*/
+          dashes: true,
+          labelHighlightBold: false,
+          arrowStrikethrough: false,//关系线与节点处无缝隙
+        }
+      };
+      if (interval) {
+        clearInterval(interval);
+      }
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+      nodesConfig = new vis.DataSet();
+      edgesConfig = new vis.DataSet();
+      draw();
+      nodesConfig.clear();
+      edgesConfig.clear();
+      nodesConfig.add(nodes);
+      edgesConfig.add(edges);
+      console.log(item)
+      var alarmList = [];
+      for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].alarm) {
+          alarmList.push(nodes[i]);
+        }
+      }
+      if (alarmList.length > 0) {
+        loop(alarmList)
+      }
+    });
+
+    // 单击鼠标右键触发
+    network.on("oncontext", function (params) {
+      var nodeId = this.getNodeAt(params.pointer.DOM);
+      var defaultWith = 305;
+      if ($(".resourcesFilter").is(':hidden')) {
+        defaultWith = 5;
+      }
+      var defaultHight = -70;
+      // 阻止冒泡
+      params.event.preventDefault();
+      if (nodeId) {
+        var node = nodesConfig.get(nodeId);
+        console.log(node.type);
+        $(".custom-menu").data("resources", node.type);//100
+        $(".custom-menu").data("id", nodeId);//100
+        $(".custom-menu").data("isIncludeNext", node.isIncludeNext);
+        $(".custom-menu").finish().toggle(100);
+        $(".custom-menu").css({
+          top: (params.pointer.DOM.y + defaultHight) + "px",
+          left: (params.pointer.DOM.x + defaultWith) + "px"
+        });
+      } else {
+        $(".custom-menu").hide();
+      }
+    });
+  }
+
+
+  var setting = {
+    check: {
+      // 启用CheckBox框,需要引入jquery.ztree.excheck.js
+      enable: false,
+      chkStyle: "checkbox",
+      chkboxType: {"Y": "ps", "N": "ps"},
+      chkDisabledInherit: true
+    },
+    data: {
+      simpleData: {
+        // 启用简单的数据格式
+        enable: true
+      }
+    },
+    view: {
+      /* fontCss : {color:"#0080cc"},*/
+      showLine: false, // 不显示连接线
+      showIcon: false,
+      dblClickExpand: true,
+      selectedMulti: true,//可以多选
+    },
+    callback: {
+      beforeClick: function (treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj(treeId);
+        zTree.expandNode(treeNode);
+      },
+      onClick: function (event, treeId, treeNode) {
+        // 在这里进行点击操作
+        $("#platform").html(treeNode.name);
+        console.log("点击节点：" + treeNode.id + "：" + treeNode.name)
+      },
+    }
+  };
+  var treeJson = [
+    {id: "11-13", name: "CRM运维平台", open: false, x: 100, y: 800},
+    {id: "11-14", name: "BOMC", open: false},
+    {id: "11-15", name: "安全管理系统", open: false},
+    {id: "11-16", name: "BOSS", open: false},
+    {id: "11-12", name: "电渠平台", open: false},
+    {id: "11-10", name: "管理信息系统", open: false},
+    {id: "11-11", name: "大数据运营平台", open: false},
+    {id: "11-13-10", pId: "11-13", name: "营业厅WEB集群", x: 450, y: 0, isHidden: true},
+    {id: "11-13-11", pId: "11-13", name: "管理应用WEB集群", x: 450, y: 100, isHidden: true},
+    {id: "11-13-12", pId: "11-13", name: "营业厅WEB集群（政企）", x: 450, y: 200, isHidden: true},
+    {id: "11-13-13", pId: "11-13", name: "互联网WEB集群", x: 450, y: 300, isHidden: true},
+    {id: "11-13-14", pId: "11-13", name: "能力开放平台集群", x: 450, y: 400, isHidden: true},
+    {id: "11-13-15", pId: "11-13", name: "服务集成平台集群", x: 450, y: 500, isHidden: true},
+    {id: "11-13-16", pId: "11-13", name: "其它接口(remote/ws)", x: 450, y: 600, isHidden: true},
+    {id: "11-13-17", pId: "11-13", name: "能力中心集群", x: 450, y: 700, isHidden: true},
+    {id: "11-13-18", pId: "11-13", name: "后台进程服务器", x: 450, y: 800, isHidden: true},
+    {id: "11-13-19", pId: "11-13", name: "缓存-产品/CAU/权限", x: 450, y: 900, isHidden: true},
+    {id: "11-13-20", pId: "11-13", name: "redis缓存-统一session/结果集缓存", x: 450, y: 1000, isHidden: true},
+    {id: "11-13-21", pId: "11-13", name: "搜索中心/分布式配置/消息中间件", x: 450, y: 1100, isHidden: true},
+    {id: "11-13-22", pId: "11-13", name: "产品配置、SSO单点登录", x: 450, y: 1200, isHidden: true},
+    {id: "11-13-23", pId: "11-13", name: "服务治理管理平台", x: 450, y: 1300, isHidden: true},
+    {id: "11-13-24", pId: "11-13", name: "CRM-DNS", x: 450, y: 1400, isHidden: true},
+    {id: "11-13-25", pId: "11-13", name: "CBOSS", x: 450, y: 1500, isHidden: true},
+    {id: "11-13-25-11", pId: "11-13-25", name: "CBOSSweb前台", x: 800, y: 1500, isHidden: true},
+    {id: "11-13-25-12", pId: "11-13-25", name: "CBOSSAPP应用", x: 800, y: 1400, isHidden: true},
+    {id: "11-13-25-13", pId: "11-13-25", name: "CBOSS数据库", x: 800, y: 1300, isHidden: true},
+    {id: "11-13-25-14", pId: "11-13-25", name: "CBOSS备用", x: 800, y: 1200, isHidden: true},
+    {id: "11-13-26", pId: "11-13", name: "云化服务平台", x: 450, y: 1600, isHidden: true}
+  ]
+
+  //初始化业务树
+  function initTree() {
+    $.fn.zTree.init($("#treeDemo"), setting, treeJson);
+    fuzzySearch('treeDemo', '#mySearchId', true, false); //初始化模糊搜索方法
+  }
+
+
+  var errTimes = 0;
+  // 默认加载
+  $(function () {
+    initTree();
+    initTopo();
+  })
+
+
+  function initTopo() {
+    nodesConfig = new vis.DataSet();
+    edgesConfig = new vis.DataSet();
+    draw();
+    nodesConfig.clear();
+    edgesConfig.clear();
+    var nodes = [];
+    var edges = []
+
+    var startX = 0;
+    var startY = 0;
+    var finalX = 0;
+    var finalY = 0;
+    for (var i = 0; i < 50; i++) {
+      var obj = {
+        id: "paas" + i,
+        label: "192.0.1." + i,
+        x: parseInt(i % 20) * 100,
+        y: parseInt(i / 20) * 100,
+        shape: "image",
+        image: "../../../../img/topo/host/host1.svg",
+        group: 1,
+        name: "192.0.1." + i,
+        font: {multi: true},
+        alarm: i % 8 == 0 ? "192.0.1." + i + "\n主机受到影响" : null,
+        title: `<p>192.0.1.${i}</p>
+                <ol><li>主机IP：</li><li>192.0.1.${i}</li></ol>
+                <ol><li>所属业务系统：</li><li>CBOSS系统</li></ol>
+                <ol><li>所属集群：</li><li>CRM-WEB</li></ol>
+                <ol><li>所属机房：</li><li>五象10楼</li></ol>
+                <ol><li>所属机柜：</li><li>A01</li></ol>
+                <ol><li>硬件责任人：</li><li>管理员</li></ol>
+                <ol><li>平台负责人：</li><li>管理员</li></ol>
+                <ol><li>监控告警：</li><li>严重1个,重要15个,一般20个</li></ol>
+                <ol><li>异常检测：</li><li>0</li></ol>
+                <ol><li>故障治愈：</li><li>自身1个,数据库1个,中间件20个</li></ol>
+                <ol><li>日常巡检：</li><li>异常指标20个</li></ol>`
+      };
+      nodes.push(obj);
+      if(i == 0) {
+        startX = obj.x;
+        startY = obj.y;
+      }
+      if(i == 49) {
+        finalX = 19 * 100;
+        finalY = obj.y;
+        console.log(finalX + "," + finalY)
+        nodes.push({
+          id: "level-1-x0-y0",
+          label: "-",
+          x: startX - 100,
+          y: startY - 100,
+          size: 0,
+        });
+        nodes.push({
+          id: "level-1-x1-y0",
+          label: "-",
+          x: finalX + 100,
+          y: startY - 100,
+          size: 0,
+        });
+        nodes.push({
+          id: "level-1-x1-y1",
+          label: "-",
+          x: finalX + 100,
+          y: finalY + 100,
+          size: 0,
+        });
+        nodes.push({
+          id: "level-1-x0-y1",
+          label: "-",
+          x: startX - 100,
+          y: finalY + 100,
+          size: 0,
+        });
+
+        edges.push({
+          from: "level-1-x0-y0",
+          to: "level-1-x1-y0",
+          label: "WEB域",
+          font: {
+            size: 24, // px
+          },
+        })
+        edges.push({
+          from: "level-1-x1-y0",
+          to: "level-1-x1-y1",
+          font: {
+            size: 24, // px
+          }
+        })
+        edges.push({
+          from: "level-1-x1-y1",
+          to: "level-1-x0-y1",
+          label: "WEB域",
+          font: {
+            size: 24, // px
+          }
+        })
+        edges.push({
+          from: "level-1-x0-y1",
+          to: "level-1-x0-y0",
+          font: {
+            size: 24, // px
+          }
+        })
+      }
+    }
+
+    for (var i = 0; i <40; i++) {
+      var obj = {
+        id: "saas" + i,
+        label: "169.0.1." + i,
+        x: parseInt(i % 20) * 100,
+        y: parseInt(i / 20) * 100 + (parseInt(50 / 20) * 100) + 300,
+        shape: "image",
+        image: "../../../../img/topo/host/host2.svg",
+        group: 2
+      }
+      nodes.push(obj);
+
+      if(i == 0) {
+        startX = obj.x;
+        startY = obj.y;
+      }
+      if(i == 39) {
+        finalX = 19 * 100;
+        finalY = obj.y;
+        console.log(finalX + "," + finalY)
+        nodes.push({
+          id: "level-2-x0-y0",
+          label: "-",
+          x: startX - 100,
+          y: startY - 100,
+          size: 0,
+        });
+        nodes.push({
+          id: "level-2-x1-y0",
+          label: "-",
+          x: finalX + 100,
+          y: startY - 100,
+          size: 0,
+        });
+        nodes.push({
+          id: "level-2-x1-y1",
+          label: "-",
+          x: finalX + 100,
+          y: finalY + 100,
+          size: 0,
+        });
+        nodes.push({
+          id: "level-2-x0-y1",
+          label: "-",
+          x: startX - 100,
+          y: finalY + 100,
+          size: 0,
+        });
+
+        edges.push({
+          from: "level-2-x0-y0",
+          to: "level-2-x1-y0",
+          label: "接入域",
+          font: {
+            size: 24, // px
+          },
+        })
+        edges.push({
+          from: "level-2-x1-y0",
+          to: "level-2-x1-y1",
+          font: {
+            size: 24, // px
+          }
+        })
+        edges.push({
+          from: "level-2-x1-y1",
+          to: "level-2-x0-y1",
+          label: "接入域",
+          font: {
+            size: 24, // px
+          }
+        })
+        edges.push({
+          from: "level-2-x0-y1",
+          to: "level-2-x0-y0",
+          font: {
+            size: 24, // px
+          }
+        })
+      }
+    }
+    for (var i = 0; i < 40; i++) {
+      var obj = {
+        id: "iass" + i,
+        label: "127.0.1." + i,
+        x: parseInt(i % 20) * 100,
+        y: parseInt(i / 20) * 100 + (parseInt(40 / 20) * 100 + (parseInt(50 / 20) * 100) + 100) + 400,
+        shape: "image",
+        image: "../../../../img/topo/host/host3.svg",
+        group: 3
+      }
+      nodes.push(obj);
+      if(i == 0) {
+        startX = obj.x;
+        startY = obj.y;
+      }
+      if(i == 39) {
+        finalX = 19 * 100;
+        finalY = obj.y;
+        console.log(finalX + "," + finalY)
+        nodes.push({
+          id: "level-3-x0-y0",
+          label: "-",
+          x: startX - 100,
+          y: startY - 100,
+          size: 0,
+        });
+        nodes.push({
+          id: "level-3-x1-y0",
+          label: "-",
+          x: finalX + 100,
+          y: startY - 100,
+          size: 0,
+        });
+        nodes.push({
+          id: "level-3-x1-y1",
+          label: "-",
+          x: finalX + 100,
+          y: finalY + 100,
+          size: 0,
+        });
+        nodes.push({
+          id: "level-3-x0-y1",
+          label: "-",
+          x: startX - 100,
+          y: finalY + 100,
+          size: 0,
+        });
+
+        edges.push({
+          from: "level-3-x0-y0",
+          to: "level-3-x1-y0",
+          label: "控制域",
+          font: {
+            size: 24, // px
+          },
+        })
+        edges.push({
+          from: "level-3-x1-y0",
+          to: "level-3-x1-y1",
+          font: {
+            size: 24, // px
+          }
+        })
+        edges.push({
+          from: "level-3-x1-y1",
+          to: "level-3-x0-y1",
+          label: "控制域",
+          font: {
+            size: 24, // px
+          }
+        })
+        edges.push({
+          from: "level-3-x0-y1",
+          to: "level-3-x0-y0",
+          font: {
+            size: 24, // px
+          }
+        })
+      }
+    }
+
+
+
+
+    for (var i = 0; i < 25; i++) {
+      var obj = {
+        id: "qaas" + i,
+        label: "10.0.1." + i,
+        x: parseInt(i % 20) * 100,
+        y: parseInt(i / 20) * 100 + parseInt(40 / 20) * 100 + (parseInt(40 / 20) * 100 + (parseInt(50 / 20) * 100) + 500) + 200,
+        shape: "image",
+        image: "../../../../img/topo/host/host2.svg",
+        group: 4
+      }
+      nodes.push(obj);
+
+      if(i == 0) {
+        startX = obj.x;
+        startY = obj.y;
+      }
+      if(i == 24) {
+        finalX = 19 * 100;
+        finalY = obj.y;
+        console.log(finalX + "," + finalY)
+        nodes.push({
+          id: "level-4-x0-y0",
+          label: "-",
+          x: startX - 100,
+          y: startY - 100,
+          size: 0,
+        });
+        nodes.push({
+          id: "level-4-x1-y0",
+          label: "-",
+          x: finalX + 100,
+          y: startY - 100,
+          size: 0,
+        });
+        nodes.push({
+          id: "level-4-x1-y1",
+          label: "-",
+          x: finalX + 100,
+          y: finalY + 100,
+          size: 0,
+        });
+        nodes.push({
+          id: "level-4-x0-y1",
+          label: "-",
+          x: startX - 100,
+          y: finalY + 100,
+          size: 0,
+        });
+
+        edges.push({
+          from: "level-4-x0-y0",
+          to: "level-4-x1-y0",
+          label: "其他域",
+          font: {
+            size: 24, // px
+          },
+        })
+        edges.push({
+          from: "level-4-x1-y0",
+          to: "level-4-x1-y1",
+          font: {
+            size: 24, // px
+          }
+        })
+        edges.push({
+          from: "level-4-x1-y1",
+          to: "level-4-x0-y1",
+          label: "其他域",
+          font: {
+            size: 24, // px
+          }
+        })
+        edges.push({
+          from: "level-4-x0-y1",
+          to: "level-4-x0-y0",
+          font: {
+            size: 24, // px
+          }
+        })
+      }
+    }
+
+    nodesConfig.add(nodes);
+    edgesConfig.add(edges);
+    window.setTimeout(function () {
+      network.fit({
+        animation: {
+          offset: {x: 300, y: 300},
+          duration: 1000,
+          easingFunction: "easeInQuad",
+        }
+      });
+    }, 2500);
+
+    var allNodes = nodesConfig.get();
+    // console.log(allNodes)
+    var alarmNodes = [];
+    for (var i = 0; i < allNodes.length; i++) {
+      if (allNodes[i].alarm) {
+        alarmNodes.push({
+          id: allNodes[i].id,
+          label: allNodes[i].name,
+          name: allNodes[i].name,
+          alarm: allNodes[i].alarm,
+          originImage: "../../../../img/topo/node/busi/busi.svg",
+          alarmImage: "../../../../img/topo/node/busi/busi1.svg"
+        })
+      }
+    }
+    if (alarmNodes.length > 0) {
+      loop(alarmNodes)
+    }
+  }
+
+
+  function loop(alarmNodes) {
+    interval = setInterval(function () {
+      alarmNodes.forEach(function (item) {
+        var obj = {id: item.id, label: item.alarm, name: item.name, font: {size: 20, color: "#f33768"}};
+        if(item.alarmImage) {
+          obj.image =  item.alarmImage;
+        }
+        nodesConfig.update(obj);
+      })
+      timeout = setTimeout(function () {
+        alarmNodes.forEach(function (item) {
+          var node = {id: item.id, label: item.name, name: item.name, font: {size: 14, color: "#000711"}};
+          if(item.originImage) {
+            node.image =  item.originImage;
+          }
+          nodesConfig.update(node);
+        })
+      }, 1000);
+    }, 2000);
+  }
+
+  $("input[id='changeTabLeft']").click(function () {
+    $(".busiClassDiv").toggle(300)
+  });
+
+  $("input[id='changeTabRight']").click(function () {
+    $(".detailDiv").toggle(300)
+  });
+
+  $(".search").delegate('#searchInput', 'input propertychange change', function () {
+    var list = [];
+    var key = $(this).val();
+    var allNodes = nodesConfig.get();
+    allNodes.forEach(function (item) {
+      if (item.label && item.label.indexOf(key) != -1) {
+        list.push(item);
+      }
+    });
+    var html = "";
+    list.forEach(function (item) {
+      html += '<p data-id="' + item.id + '" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">' + item.label + '</p>';
+    });
+    $(".searchResult").height(300);
+    $(".searchResult").html(html);
+  });
+
+  $(".resourceDetailShow section").click(function () {
+    var id = $(this).data("id");
+    if (id) {
+      network.focus(id, {
+        scale: 1.5,
+        animation: {
+          duration: 1000,
+          easingFunction: "linear"
+        },
+      });
+    }
+  });
+
+
+  $(".searchResult").delegate('p', 'click', _.debounce(function () {
+    var id = $(this).data("id");
+    var val = $(this).html();
+    toNodeFocus(id);
+  }, 1200));
+
+
+  function toNodeFocus(id, style) {
+    var allNodes = nodesConfig.get();
+    allNodes.forEach(function (item) {
+      var color = "#75AFFF";
+      var size = 14;
+      if (item.id == id) {
+        color = style ? style : "#44d413";
+        size = 20;
+      }
+      nodesConfig.update({id: item.id, font: {size: size, color: color}});
+    });
+    network.focus(id, {
+      font: {
+        /*全局设置拓扑图字体*/
+        color: '#ffffff',
+      },
+      scale: 1.5,
+      animation: {
+        duration: 1000,
+        easingFunction: "linear"
+      },
+    });
+  }
+
+  $(".toScroll").click(function () {
+    $(".dataScroll").trigger('mouseout');
+  });
+  $(".pauseScroll").click(function () {
+    $(".dataScroll").trigger('mouseover');
+  })
+</script>
+</body>
+</html>
